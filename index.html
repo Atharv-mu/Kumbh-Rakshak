@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kumbh Rakshak | Prayagraj AI Thermal Surveillance & Real-Time Disaster Mitigation Command</title>
+  <title>Kumbh Rakshak | AI Thermal Surveillance & Multi-City Disaster Command Platform</title>
   
   <!-- Google Fonts: Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -93,8 +93,8 @@
         <i data-lucide="siren" class="w-6 h-6 text-white"></i>
       </div>
       <div>
-        <span class="text-base tracking-wide font-heading uppercase">🚨 REAL-TIME PRAYAGRAJ ALERT: CRITICAL STAMPEDE DENSITY DETECTED!</span>
-        <p class="text-xs font-normal text-rose-100">Sangam Ghat Gate 3 live density exceeded safe threshold (>5.2 p/m²). Emergency siren triggered across Prayagraj sectors!</p>
+        <span class="text-base tracking-wide font-heading uppercase">🚨 <span id="siren-location-label">PRAYAGRAJ</span> ALERT: CRITICAL CROWD DENSITY DETECTED!</span>
+        <p class="text-xs font-normal text-rose-100"><span id="siren-gate-label">Sangam Ghat Gate 3</span> camera AI crossed density thresholds (>5.2 p/m²). Emergency siren triggered across all local sectors!</p>
       </div>
     </div>
     <div class="flex items-center gap-3">
@@ -116,7 +116,7 @@
           <i data-lucide="shield-alert" class="w-9 h-9"></i>
         </div>
         <h2 class="text-2xl font-bold text-slate-900 tracking-tight font-heading">Kumbh Rakshak Portal</h2>
-        <p class="text-xs text-slate-500 mt-1">Prayagraj Real-Time Thermal & Disaster Command Center</p>
+        <p class="text-xs text-slate-500 mt-1">Multi-City AI Thermal & Disaster Command Center</p>
       </div>
 
       <!-- Quick Role Selection Tabs -->
@@ -128,6 +128,19 @@
 
       <!-- Auth Form -->
       <form onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="text-xs font-semibold text-slate-700 block mb-1">Select Event Jurisdiction</label>
+          <div class="relative mb-3">
+            <i data-lucide="map-pin" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+            <select id="login-location-select" onchange="changeLocation(this.value)" class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs font-bold text-slate-800 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 focus:outline-none transition">
+              <option value="prayagraj">Prayagraj Sangam (Kumbh Mela)</option>
+              <option value="haridwar">Haridwar Ganga Ghat (Kumbh Mela)</option>
+              <option value="ujjain">Ujjain Shipra Ghat (Simhastha Kumbh)</option>
+              <option value="nashik">Nashik Ramkund (Kumbh Mela)</option>
+            </select>
+          </div>
+        </div>
+
         <div>
           <label class="text-xs font-semibold text-slate-700 block mb-1">Official ID / Security Credential</label>
           <div class="relative">
@@ -145,7 +158,7 @@
         </div>
 
         <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20">
-          <i data-lucide="log-in" class="w-4 h-4"></i> Authenticate & Launch Real-Time Portal
+          <i data-lucide="log-in" class="w-4 h-4"></i> Authenticate & Launch Platform
         </button>
       </form>
 
@@ -165,8 +178,20 @@
         <h1 class="font-bold text-lg text-slate-900 flex items-center gap-2 font-heading tracking-tight">
           Kumbh Rakshak <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500 pulse-dot"></span> LIVE REAL-TIME FEED</span>
         </h1>
-        <p class="text-xs text-slate-500">Prayagraj Sangam Thermal Surveillance & Emergency Command</p>
+        <p class="text-xs text-slate-500">Multi-City AI Thermal Surveillance & Emergency Command</p>
       </div>
+    </div>
+
+    <!-- Active Location Selector in Header -->
+    <div class="flex items-center space-x-2 bg-orange-50 border border-orange-200 px-3 py-1.5 rounded-xl">
+      <i data-lucide="map-pin" class="w-4 h-4 text-orange-600"></i>
+      <span class="text-xs font-semibold text-slate-600">Location:</span>
+      <select id="header-location-select" onchange="changeLocation(this.value)" class="bg-transparent text-xs font-bold text-orange-700 focus:outline-none cursor-pointer">
+        <option value="prayagraj">Prayagraj Sangam</option>
+        <option value="haridwar">Haridwar Ganga Ghat</option>
+        <option value="ujjain">Ujjain Shipra Ghat</option>
+        <option value="nashik">Nashik Ramkund</option>
+      </select>
     </div>
 
     <!-- Navigation Tabs -->
@@ -175,7 +200,7 @@
         <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Live Dashboard
       </button>
       <button onclick="switchTab('gis')" id="nav-gis" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition">
-        <i data-lucide="map" class="w-4 h-4"></i> Prayagraj GIS Map
+        <i data-lucide="map" class="w-4 h-4"></i> GIS Map & Sectors
       </button>
       <button onclick="switchTab('camera')" id="nav-camera" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition relative">
         <i data-lucide="camera" class="w-4 h-4 text-rose-600"></i> Thermal AI Cameras
@@ -185,7 +210,7 @@
         <i data-lucide="users" class="w-4 h-4 text-orange-600"></i> Volunteer Intercept
       </button>
       <button onclick="switchTab('health')" id="nav-health" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition">
-        <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-600"></i> Prayagraj Medical Rooms
+        <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-600"></i> Medical Rooms
       </button>
       <button onclick="switchTab('analytics')" id="nav-analytics" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition">
         <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Trends
@@ -214,7 +239,7 @@
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div class="bg-white border border-slate-200 p-5 rounded-2xl card-shadow relative overflow-hidden">
           <div class="flex justify-between items-center">
-            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Prayagraj Sangam Footfall</p>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider"><span class="city-name-label">Prayagraj</span> Footfall</p>
             <div class="p-1.5 bg-orange-50 text-orange-600 rounded-lg"><i data-lucide="users" class="w-4 h-4"></i></div>
           </div>
           <h3 id="stat-total-crowd" class="text-2xl font-extrabold text-slate-900 mt-2 font-heading font-mono">324,180</h3>
@@ -225,7 +250,7 @@
 
         <div class="bg-white border border-slate-200 p-5 rounded-2xl card-shadow">
           <div class="flex justify-between items-center">
-            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Prayagraj ICU Beds Free</p>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">ICU Beds Available</p>
             <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="bed" class="w-4 h-4"></i></div>
           </div>
           <h3 id="stat-icu-free" class="text-2xl font-extrabold text-emerald-600 mt-2 font-heading font-mono">26 / 45 Beds</h3>
@@ -238,7 +263,7 @@
             <div class="p-1.5 bg-rose-50 text-rose-600 rounded-lg"><i data-lucide="scan-face" class="w-4 h-4"></i></div>
           </div>
           <h3 id="stat-thermal-detections" class="text-2xl font-extrabold text-rose-600 mt-2 font-heading font-mono">14 Flagged</h3>
-          <p class="text-xs font-medium text-rose-600 mt-1">Escorted to Quarantine Rooms</p>
+          <p class="text-xs font-medium text-rose-600 mt-1">Escorted to Isolation Rooms</p>
         </div>
 
         <div class="bg-white border border-slate-200 p-5 rounded-2xl card-shadow">
@@ -253,13 +278,13 @@
         </div>
       </div>
 
-      <!-- MAIN SPLIT: PRAYAGRAJ MAP + SIDEBAR -->
+      <!-- MAIN SPLIT: MAP + SIDEBAR -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- GIS Map (8 Cols) -->
         <div class="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-4 flex flex-col min-h-[540px] card-shadow">
           <div class="flex justify-between items-center mb-3">
             <h2 class="font-bold text-slate-800 flex items-center gap-2 text-sm font-heading">
-              <i data-lucide="map-pin" class="w-4 h-4 text-orange-600"></i> Live Prayagraj GIS Map: Sangam Ghat & Medical Rooms
+              <i data-lucide="map-pin" class="w-4 h-4 text-orange-600"></i> GIS Map: <span class="city-name-label">Prayagraj</span> Sectors & Medical Rooms
             </h2>
             <div class="flex items-center gap-2">
               <button onclick="triggerCrowdSiren()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 transition flex items-center gap-1.5 shadow-md shadow-rose-500/20">
@@ -275,13 +300,13 @@
         <!-- Sidebar: Real-Time Stream Feeds & Activity Log (4 Cols) -->
         <div class="lg:col-span-4 space-y-6">
           
-          <!-- Live Thermal Camera Box (Live Data Refreshing) -->
+          <!-- Live Thermal Camera Box -->
           <div class="bg-slate-900 text-white p-5 rounded-2xl card-shadow relative overflow-hidden">
             <div class="radar-line"></div>
             <div class="flex justify-between items-center mb-3">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
-                <h2 class="font-bold text-sm font-heading text-slate-100">Live Thermal Feed (Gate 1)</h2>
+                <h2 class="font-bold text-sm font-heading text-slate-100"><span class="city-name-label">Prayagraj</span> Thermal Cam #01</h2>
               </div>
               <span id="live-thermal-temp" class="text-[10px] font-mono bg-rose-950 text-rose-300 border border-rose-800 px-2 py-0.5 rounded">102.8°F FEVER</span>
             </div>
@@ -290,7 +315,7 @@
               <div class="text-center z-10">
                 <i data-lucide="scan-face" class="w-8 h-8 text-rose-400 mx-auto animate-pulse"></i>
                 <p id="live-thermal-diag" class="text-[11px] font-bold text-slate-100 mt-1">Target Pilgrim: Fever & Facial Rash</p>
-                <p class="text-[10px] text-slate-300">Location: Sangam Ghat Entrance 1</p>
+                <p class="text-[10px] text-slate-300">Location: <span id="main-cam-location-text">Sangam Ghat Entrance 1</span></p>
               </div>
             </div>
 
@@ -317,18 +342,18 @@
       </div>
     </div>
 
-    <!-- VIEW 2: PRAYAGRAJ GIS MAP DETAILED -->
+    <!-- VIEW 2: GIS MAP DETAILED -->
     <div id="view-gis" class="hidden space-y-6">
       <div class="bg-white border border-slate-200 p-6 rounded-2xl card-shadow">
         <div class="flex justify-between items-center mb-4">
           <div>
             <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 font-heading">
-              <i data-lucide="map" class="w-5 h-5 text-orange-600"></i> Prayagraj GIS Sector Map & Medical Rooms
+              <i data-lucide="map" class="w-5 h-5 text-orange-600"></i> GIS Sector Map & Medical Rooms (<span class="city-name-label">Prayagraj</span>)
             </h2>
-            <p class="text-xs text-slate-500">Live headcount telemetry across Triveni Sangam, Daraganj, Parade Ground, and Naini Bridge.</p>
+            <p class="text-xs text-slate-500">Live headcount telemetry across all local bathing ghats and camp grounds.</p>
           </div>
           <button onclick="addNewSector()" class="px-3.5 py-2 bg-orange-600 text-white text-xs font-semibold rounded-xl hover:bg-orange-700 transition shadow">
-            + Add Prayagraj Sector Zone
+            + Add <span class="city-name-label">Prayagraj</span> Sector Zone
           </button>
         </div>
 
@@ -337,7 +362,7 @@
             <thead class="bg-slate-100 text-slate-600 uppercase font-semibold border-b border-slate-200">
               <tr>
                 <th class="p-3.5">Sector Code</th>
-                <th class="p-3.5">Prayagraj Location</th>
+                <th class="p-3.5">Location Zone</th>
                 <th class="p-3.5">Assigned Medical Room</th>
                 <th class="p-3.5">Live Occupancy / Capacity</th>
                 <th class="p-3.5">Risk Level</th>
@@ -358,9 +383,9 @@
         <div class="flex justify-between items-center mb-6">
           <div>
             <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 font-heading">
-              <i data-lucide="camera" class="w-5 h-5 text-rose-600"></i> AI Thermal Cameras at Prayagraj Entry Gates
+              <i data-lucide="camera" class="w-5 h-5 text-rose-600"></i> AI Thermal Cameras (<span class="city-name-label">Prayagraj</span> Entry Gates)
             </h2>
-            <p class="text-xs text-slate-500">Live body temperature heatmap scanning at Triveni Sangam, Daraganj, and Parade Ground.</p>
+            <p class="text-xs text-slate-500">Live body temperature heatmap scanning at primary pilgrimage entry points.</p>
           </div>
           <button onclick="simulateNewDetection()" class="px-4 py-2 bg-rose-600 text-white text-xs font-bold rounded-xl hover:bg-rose-700 transition shadow flex items-center gap-2">
             <i data-lucide="scan" class="w-4 h-4"></i> Trigger AI Thermal Scan
@@ -370,7 +395,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="bg-slate-900 rounded-2xl p-4 text-white relative overflow-hidden border border-slate-800">
             <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-bold text-slate-200 font-heading">Cam #01 - Sangam Ghat Gate 1</span>
+              <span class="text-xs font-bold text-slate-200 font-heading">Cam #01 - <span id="cam-1-title font-heading">Gate 1</span></span>
               <span id="cam-1-temp-tag" class="text-[10px] bg-rose-900 text-rose-300 border border-rose-700 px-2 py-0.5 rounded font-mono">102.8°F FEVER</span>
             </div>
             <div class="h-44 bg-slate-950 rounded-xl flex items-center justify-center relative border border-slate-800 mb-3 thermal-overlay">
@@ -386,7 +411,7 @@
 
           <div class="bg-slate-900 rounded-2xl p-4 text-white relative overflow-hidden border border-slate-800">
             <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-bold text-slate-200 font-heading">Cam #02 - Triveni Pontoon Bridge</span>
+              <span class="text-xs font-bold text-slate-200 font-heading">Cam #02 - Bridge Access</span>
               <span class="text-[10px] bg-emerald-900 text-emerald-300 border border-emerald-700 px-2 py-0.5 rounded font-mono">98.6°F SAFE</span>
             </div>
             <div class="h-44 bg-slate-950 rounded-xl flex items-center justify-center relative border border-slate-800 mb-3">
@@ -399,7 +424,7 @@
 
           <div class="bg-slate-900 rounded-2xl p-4 text-white relative overflow-hidden border border-slate-800">
             <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-bold text-slate-200 font-heading">Cam #03 - Daraganj Sector Entry</span>
+              <span class="text-xs font-bold text-slate-200 font-heading">Cam #03 - Camp Entrance</span>
               <span class="text-[10px] bg-amber-900 text-amber-300 border border-amber-700 px-2 py-0.5 rounded font-mono">101.4°F HEATSTROKE</span>
             </div>
             <div class="h-44 bg-slate-950 rounded-xl flex items-center justify-center relative border border-slate-800 mb-3 thermal-overlay">
@@ -420,7 +445,7 @@
     <div id="view-volunteers" class="hidden space-y-6">
       <div class="bg-white border border-slate-200 p-6 rounded-2xl card-shadow">
         <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2 font-heading">
-          <i data-lucide="users" class="w-5 h-5 text-orange-600"></i> Prayagraj Ground Volunteer Intercept Teams
+          <i data-lucide="users" class="w-5 h-5 text-orange-600"></i> Ground Volunteer Intercept Teams (<span class="city-name-label">Prayagraj</span>)
         </h2>
         <p class="text-xs text-slate-500 mb-6">Live status of volunteer teams intercepting thermal-flagged pilgrims and guiding them to Medical Rooms.</p>
 
@@ -444,18 +469,18 @@
       </div>
     </div>
 
-    <!-- VIEW 5: PRAYAGRAJ MEDICAL ROOMS -->
+    <!-- VIEW 5: MEDICAL ROOMS -->
     <div id="view-health" class="hidden space-y-6">
       <div class="bg-white border border-slate-200 p-6 rounded-2xl card-shadow">
         <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2 font-heading">
-          <i data-lucide="heart-pulse" class="w-5 h-5 text-emerald-600"></i> Prayagraj Kumbh Medical Rooms & Quarantine Ward Management
+          <i data-lucide="heart-pulse" class="w-5 h-5 text-emerald-600"></i> Medical Rooms & Quarantine Wards (<span class="city-name-label">Prayagraj</span>)
         </h2>
-        <p class="text-xs text-slate-500 mb-6">Real-time bed availability and isolation capacity across Prayagraj medical centers.</p>
+        <p class="text-xs text-slate-500 mb-6">Real-time bed availability and isolation capacity across local medical centers.</p>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
             <div class="flex justify-between items-center mb-2">
-              <h3 class="font-bold text-slate-900 text-sm">Medical Room 1: Sangam Gate Triage</h3>
+              <h3 class="font-bold text-slate-900 text-sm">Medical Room 1: Triage Unit</h3>
               <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">ACTIVE</span>
             </div>
             <p class="text-xs text-slate-500 mb-2">ICU Beds Free: 8 | On-Duty Doctors: 12</p>
@@ -466,7 +491,7 @@
 
           <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
             <div class="flex justify-between items-center mb-2">
-              <h3 class="font-bold text-slate-900 text-sm">Medical Room 2: Daraganj Isolation Ward</h3>
+              <h3 class="font-bold text-slate-900 text-sm">Medical Room 2: Isolation Ward</h3>
               <span class="text-[10px] font-bold bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full">QUARANTINE</span>
             </div>
             <p class="text-xs text-slate-500 mb-2">Contagious Isolation Beds Free: 12</p>
@@ -477,8 +502,8 @@
 
           <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
             <div class="flex justify-between items-center mb-2">
-              <h3 class="font-bold text-slate-900 text-sm">Medical Room 3: Triveni Pontoon Camp</h3>
-              <span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">HEATSTROKE WARD</span>
+              <h3 class="font-bold text-slate-900 text-sm">Medical Room 3: Heatstroke Camp</h3>
+              <span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">RECOVERY</span>
             </div>
             <p class="text-xs text-slate-500 mb-2">Recovery Beds Free: 6 | Paramedics: 10</p>
             <p class="text-xs text-slate-600 font-medium mb-3">Features: ORS Cooling Baths, Cardiac Monitoring, Ambulance Bay</p>
@@ -492,7 +517,7 @@
     <!-- VIEW 6: ANALYTICS -->
     <div id="view-analytics" class="hidden space-y-6">
       <div class="bg-white border border-slate-200 p-6 rounded-2xl card-shadow">
-        <h2 class="text-lg font-bold text-slate-900 mb-2 font-heading">Prayagraj Real-Time Performance Analytics</h2>
+        <h2 class="text-lg font-bold text-slate-900 mb-2 font-heading">Real-Time Performance Analytics (<span class="city-name-label">Prayagraj</span>)</h2>
         <p class="text-xs text-slate-500 mb-6">Disaster prevention statistics updated dynamically.</p>
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -509,7 +534,7 @@
             <h3 class="text-2xl font-bold text-blue-600 font-heading mt-1">42 Patients</h3>
           </div>
           <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-            <p class="text-xs text-slate-500 font-semibold">Prayagraj Footfall Safe</p>
+            <p class="text-xs text-slate-500 font-semibold">Footfall Safeguarded</p>
             <h3 id="analytics-total-safe" class="text-2xl font-bold text-purple-600 font-heading mt-1 font-mono">324,180</h3>
           </div>
         </div>
@@ -518,11 +543,54 @@
 
   </main>
 
-  <!-- ==================== JAVASCRIPT REAL-TIME ENGINE ==================== -->
+  <!-- ==================== JAVASCRIPT MULTI-LOCATION REAL-TIME ENGINE ==================== -->
   <script>
+    // Multi-City Geographic Coordinates & Sector Configurations
+    const cityDatabase = {
+      prayagraj: {
+        cityName: 'Prayagraj Sangam',
+        center: [25.4365, 81.8840],
+        sectors: [
+          { code: 'SEC-01', name: 'Triveni Sangam Ghat', medicalRoom: 'Medical Room 1 (Triage)', capacity: 150000, occupancy: 142180, risk: 'Critical', lat: 25.4358, lng: 81.8842 },
+          { code: 'SEC-02', name: 'Daraganj Sector Area', medicalRoom: 'Medical Room 2 (Isolation)', capacity: 200000, occupancy: 110420, risk: 'Moderate', lat: 25.4380, lng: 81.8890 },
+          { code: 'SEC-03', name: 'Parade Ground Camps', medicalRoom: 'Medical Room 3 (Heatstroke)', capacity: 80000, occupancy: 32100, risk: 'Normal', lat: 25.4410, lng: 81.8750 }
+        ]
+      },
+      haridwar: {
+        cityName: 'Haridwar Ganga Ghat',
+        center: [29.9457, 78.1642],
+        sectors: [
+          { code: 'SEC-01', name: 'Har Ki Pauri Ghat', medicalRoom: 'Medical Room 1 (Main Ghat)', capacity: 120000, occupancy: 114500, risk: 'Critical', lat: 29.9526, lng: 78.1682 },
+          { code: 'SEC-02', name: 'Subhash Ghat Zone', medicalRoom: 'Medical Room 2 (River Patrol)', capacity: 90000, occupancy: 52000, risk: 'Normal', lat: 29.9490, lng: 78.1660 },
+          { code: 'SEC-03', name: 'Bairagi Camp Area', medicalRoom: 'Medical Room 3 (Camp Triage)', capacity: 110000, occupancy: 68000, risk: 'Moderate', lat: 29.9380, lng: 78.1580 }
+        ]
+      },
+      ujjain: {
+        cityName: 'Ujjain Shipra Ghat',
+        center: [23.1828, 75.7682],
+        sectors: [
+          { code: 'SEC-01', name: 'Ram Ghat Main Bathing', medicalRoom: 'Medical Room 1 (Ram Ghat)', capacity: 140000, occupancy: 128000, risk: 'Critical', lat: 23.1840, lng: 75.7660 },
+          { code: 'SEC-02', name: 'Mahakal Mandir Corridor', medicalRoom: 'Medical Room 2 (Corridor)', capacity: 160000, occupancy: 94000, risk: 'Moderate', lat: 23.1830, lng: 75.7720 },
+          { code: 'SEC-03', name: 'Narsinghat Buffer Zone', medicalRoom: 'Medical Room 3 (Buffer)', capacity: 75000, occupancy: 28000, risk: 'Normal', lat: 23.1790, lng: 75.7620 }
+        ]
+      },
+      nashik: {
+        cityName: 'Nashik Ramkund',
+        center: [20.0063, 73.7924],
+        sectors: [
+          { code: 'SEC-01', name: 'Ramkund Main Snan Ghat', medicalRoom: 'Medical Room 1 (Ramkund)', capacity: 100000, occupancy: 91000, risk: 'Critical', lat: 20.0075, lng: 73.7935 },
+          { code: 'SEC-02', name: 'Panchavati Temple Sector', medicalRoom: 'Medical Room 2 (Panchavati)', capacity: 130000, occupancy: 72000, risk: 'Moderate', lat: 20.0090, lng: 73.7960 },
+          { code: 'SEC-03', name: 'Sadhugram Camp Area', medicalRoom: 'Medical Room 3 (Sadhugram)', capacity: 120000, occupancy: 41000, risk: 'Normal', lat: 20.0010, lng: 73.7880 }
+        ]
+      }
+    };
+
+    let currentCityKey = 'prayagraj';
+    let sectors = cityDatabase[currentCityKey].sectors;
+
     const roleCredentials = {
       admin: { name: 'NDRF Commander', email: 'admin.commander@kumbhrakshak.gov.in' },
-      health: { name: 'Chief Medical Officer (CMO)', email: 'cmo.prayagraj@kumbhrakshak.gov.in' },
+      health: { name: 'Chief Medical Officer (CMO)', email: 'cmo.officer@kumbhrakshak.gov.in' },
       field: { name: 'Field Volunteer Lead', email: 'volunteer.lead@kumbhrakshak.gov.in' }
     };
 
@@ -530,25 +598,40 @@
     let sirenActive = false;
     let audioContext;
 
-    // Prayagraj Sectors & Medical Rooms Data
-    const prayagrajSectors = [
-      { code: 'SEC-01', name: 'Triveni Sangam Ghat', medicalRoom: 'Medical Room 1 (Triage)', capacity: 150000, occupancy: 142180, risk: 'Critical', lat: 25.4358, lng: 81.8842 },
-      { code: 'SEC-02', name: 'Daraganj Sector Area', medicalRoom: 'Medical Room 2 (Isolation)', capacity: 200000, occupancy: 110420, risk: 'Moderate', lat: 25.4380, lng: 81.8890 },
-      { code: 'SEC-03', name: 'Parade Ground Camps', medicalRoom: 'Medical Room 3 (Heatstroke)', capacity: 80000, occupancy: 32100, risk: 'Normal', lat: 25.4410, lng: 81.8750 }
-    ];
-
-    let sectors = JSON.parse(localStorage.getItem('kumbh_prayagraj_sectors')) || prayagrajSectors;
     let volunteerTasks = JSON.parse(localStorage.getItem('kumbh_volunteer_tasks')) || [
       { id: 'THERM-991', symptom: 'Thermal Fever (102.8°F)', team: 'Volunteer Team Alpha', camp: 'Medical Room 1 (Triage)', status: 'Escorting to Medical Room' }
     ];
 
     let systemLogs = [
-      { time: '11:10:02 AM', text: 'WebSocket connected to Prayagraj Control Node #01', type: 'info' },
-      { time: '11:09:45 AM', text: 'Thermal Camera #01 flagged fever 102.8°F at Sangam Gate', type: 'warn' },
-      { time: '11:08:12 AM', text: 'Volunteer Team Alpha dispatched to Sangam Entrance', type: 'success' }
+      { time: '11:10:02 AM', text: 'WebSocket connected to Central Multi-City Node #01', type: 'info' }
     ];
 
     let map, markers = {};
+
+    function changeLocation(newKey) {
+      if (!cityDatabase[newKey]) return;
+      currentCityKey = newKey;
+      sectors = cityDatabase[currentCityKey].sectors;
+
+      document.getElementById('header-location-select').value = newKey;
+      document.getElementById('login-location-select').value = newKey;
+
+      const cityName = cityDatabase[currentCityKey].cityName;
+      document.querySelectorAll('.city-name-label').forEach(el => el.innerText = cityName);
+
+      const mainCamText = document.getElementById('main-cam-location-text');
+      if (mainCamText) mainCamText.innerText = `${sectors[0].name} Entrance`;
+
+      document.getElementById('siren-location-label').innerText = cityName.toUpperCase();
+      document.getElementById('siren-gate-label').innerText = sectors[0].name;
+
+      if (map) {
+        map.setView(cityDatabase[currentCityKey].center, 14);
+      }
+
+      addLog(`Switched active event jurisdiction to ${cityName}`, 'info');
+      updateUI();
+    }
 
     function openLoginModal() {
       document.getElementById('login-modal').classList.remove('hidden');
@@ -593,10 +676,10 @@
       if (!container) return;
 
       try {
-        map = L.map('map', { center: [25.4365, 81.8840], zoom: 14 });
+        map = L.map('map', { center: cityDatabase[currentCityKey].center, zoom: 14 });
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
           maxZoom: 18,
-          attribution: '&copy; OpenStreetMap | Prayagraj Kumbh Real-time' 
+          attribution: '&copy; OpenStreetMap | Kumbh Rakshak' 
         }).addTo(map);
         renderSectorMarkers();
       } catch (e) {
@@ -633,15 +716,15 @@
         camp: 'Medical Room 1 (Triage)',
         status: 'Dispatched to Intercept'
       });
-      addLog(`Volunteer Team Beta dispatched for Target ${newId} at Sangam Entrance`, 'warn');
+      addLog(`Volunteer Team Beta dispatched for Target ${newId} at ${sectors[0].name}`, 'warn');
       updateUI();
-      alert(`🚨 VOLUNTEER DISPATCHED! Team Beta sent to intercept target pilgrim and escort to Medical Room 1.`);
+      alert(`🚨 VOLUNTEER DISPATCHED! Team Beta sent to intercept target pilgrim at ${sectors[0].name} and escort to Medical Room 1.`);
     }
 
     function triggerCrowdSiren() {
       sirenActive = true;
       document.getElementById('siren-alert-banner').classList.remove('hidden');
-      addLog('CRITICAL: Emergency Dispersal Siren Triggered at Triveni Sangam Sector 1', 'danger');
+      addLog(`CRITICAL: Emergency Dispersal Siren Triggered at ${sectors[0].name}`, 'danger');
       playSirenSound();
     }
 
@@ -693,7 +776,6 @@
     }
 
     function updateUI() {
-      localStorage.setItem('kumbh_prayagraj_sectors', JSON.stringify(sectors));
       localStorage.setItem('kumbh_volunteer_tasks', JSON.stringify(volunteerTasks));
 
       const tableBody = document.getElementById('volunteer-table-body');
@@ -740,22 +822,20 @@
 
     function addNewSector() {
       const code = `SEC-0${sectors.length + 1}`;
-      sectors.push({ code, name: `Naini Bridge Sector ${sectors.length + 1}`, medicalRoom: `Medical Room ${sectors.length + 1}`, capacity: 100000, occupancy: 12000, risk: 'Normal', lat: 25.4300, lng: 81.8600 });
-      addLog(`New Prayagraj Sector boundary created: ${code}`, 'info');
+      const center = cityDatabase[currentCityKey].center;
+      sectors.push({ code, name: `${cityDatabase[currentCityKey].cityName} Buffer ${sectors.length + 1}`, medicalRoom: `Medical Room ${sectors.length + 1}`, capacity: 100000, occupancy: 12000, risk: 'Normal', lat: center[0] + 0.004, lng: center[1] + 0.004 });
+      addLog(`New Sector boundary created: ${code}`, 'info');
       updateUI();
     }
 
     // --- REAL-TIME DATA TICK ENGINE (1-SECOND TICK) ---
     setInterval(() => {
-      // 1. Clock Update
       const now = new Date();
-      const timeStr = now.toLocaleTimeString();
       const clockElem = document.getElementById('stat-system-tick');
-      if (clockElem) clockElem.innerText = timeStr;
+      if (clockElem) clockElem.innerText = now.toLocaleTimeString();
 
-      // 2. Real-Time Crowd Fluctuation
       const delta = Math.floor(Math.random() * 18) - 6;
-      sectors[0].occupancy = Math.max(120000, Math.min(150000, sectors[0].occupancy + delta));
+      sectors[0].occupancy = Math.max(80000, Math.min(sectors[0].capacity, sectors[0].occupancy + delta));
       
       const totalFootfall = sectors.reduce((acc, curr) => acc + curr.occupancy, 0);
       const totalCrowdElem = document.getElementById('stat-total-crowd');
@@ -763,26 +843,23 @@
       if (totalCrowdElem) totalCrowdElem.innerText = totalFootfall.toLocaleString();
       if (analyticsSafeElem) analyticsSafeElem.innerText = totalFootfall.toLocaleString();
 
-      // 3. Fluctuating Thermal Temperature Simulation
       const tempVariation = (102.2 + Math.random() * 1.2).toFixed(1);
       const tempTag = document.getElementById('live-thermal-temp');
       const cam1Tag = document.getElementById('cam-1-temp-tag');
       if (tempTag) tempTag.innerText = `${tempVariation}°F FEVER`;
       if (cam1Tag) cam1Tag.innerText = `${tempVariation}°F FEVER`;
 
-      // 4. Random Periodic System Logs
-      if (Math.random() < 0.25) {
+      if (Math.random() < 0.20) {
         const sampleLogs = [
-          `Camera #01 density optical stream calculated: ${((sectors[0].occupancy / sectors[0].capacity) * 100).toFixed(1)}%`,
-          `Volunteers synced via Walkie-Mesh in Daraganj Sector 2`,
-          `Medical Room 1: Triage vital parameters updated for Patient #881`,
-          `Gate 3 Pontoon flow rate safe: 1.4 m/s velocity`
+          `Camera #01 density stream: ${((sectors[0].occupancy / sectors[0].capacity) * 100).toFixed(1)}% at ${sectors[0].name}`,
+          `Walkie-Mesh sync confirmed across local sectors`,
+          `Medical Room 1: Triage parameters clear`,
+          `Flow velocity stable: 1.4 m/s`
         ];
         addLog(sampleLogs[Math.floor(Math.random() * sampleLogs.length)], 'info');
       }
 
-      // 5. Automatic Dispersal Siren Trigger if Capacity > 96%
-      if (sectors[0].occupancy > 144500 && !sirenActive) {
+      if (sectors[0].occupancy > sectors[0].capacity * 0.96 && !sirenActive) {
         triggerCrowdSiren();
       }
 
@@ -792,6 +869,7 @@
     window.onload = () => {
       lucide.createIcons();
       initMap();
+      changeLocation('prayagraj');
       switchTab('dashboard');
       renderLogs();
       updateUI();
