@@ -81,6 +81,21 @@
       50% { opacity: 0.3; transform: scale(0.85); }
       100% { opacity: 1; transform: scale(1); }
     }
+
+    /* Custom Leaflet Tooltip Styling for Extended Hover Display */
+    .leaflet-tooltip.custom-hover-tooltip {
+      background-color: #0f172a !important;
+      color: #ffffff !important;
+      border: 1px solid #ea580c !important;
+      border-radius: 0.75rem !important;
+      padding: 10px 14px !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3) !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 12px !important;
+    }
+    .leaflet-tooltip-top.custom-hover-tooltip::before {
+      border-top-color: #0f172a !important;
+    }
   </style>
 </head>
 
@@ -695,6 +710,8 @@
       sectors.forEach(s => {
         let color = s.risk === 'Critical' ? '#e11d48' : (s.risk === 'Moderate' ? '#d97706' : '#059669');
         let circle = L.circle([s.lat, s.lng], { color: color, fillColor: color, fillOpacity: 0.35, radius: 380 }).addTo(map);
+        
+        // Detailed Popup Content
         circle.bindPopup(`
           <div style="font-family: 'Inter', sans-serif;">
             <b style="color: #ea580c; font-size: 13px;">${s.name} (${s.code})</b><br>
@@ -703,6 +720,33 @@
             <b>Risk Level:</b> <b style="color: ${color};">${s.risk}</b>
           </div>
         `);
+
+        // Extended Persistent Hover Tooltip Feature
+        // Sticky/persistent settings so the tooltip remains permanently visible on hover and doesn't auto-dismiss quickly
+        const tooltipContent = `
+          <div style="font-family: 'Inter', sans-serif; line-height: 1.4;">
+            <div style="font-weight: 800; color: #f97316; margin-bottom: 2px;">📍 INFECTED / HIGH DENSITY ZONE</div>
+            <div style="font-weight: 700; font-size: 13px; color: #ffffff;">${s.name} (${s.code})</div>
+            <div style="margin-top: 4px; font-size: 11px; color: #cbd5e1;">
+              • Live Density: <b style="color: #38bdf8;">${s.occupancy.toLocaleString()}</b> pilgrims<br>
+              • Thermal Risk: <b style="color: ${color};">${s.risk.toUpperCase()}</b><br>
+              • Medical Facility: <b>${s.medicalRoom}</b>
+            </div>
+            <div style="margin-top: 6px; font-size: 10px; color: #f43f5e; font-weight: 700; background: rgba(225,29,72,0.15); padding: 3px 6px; border-radius: 4px; border: 1px solid rgba(225,29,72,0.3);">
+              ⚠️ AI Thermal Scanning & Volunteer Escort Active
+            </div>
+          </div>
+        `;
+
+        circle.bindTooltip(tooltipContent, {
+          permanent: false,
+          sticky: true,           // Follows cursor continuously across infected area
+          direction: 'top',
+          className: 'custom-hover-tooltip',
+          offset: [0, -10],
+          opacity: 0.98
+        });
+
         markers[s.code] = circle;
       });
     }
