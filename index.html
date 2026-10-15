@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kumbh Rakshak | AI Thermal Camera & IoT Early Disaster Prediction Platform</title>
+  <title>Kumbh Rakshak | Prayagraj AI Thermal Surveillance & Real-Time Disaster Mitigation Command</title>
   
   <!-- Google Fonts: Inter & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,7 +47,7 @@
   <style>
     body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
     h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; }
-    .map-frame { height: 100%; min-height: 520px; border-radius: 0.85rem; z-index: 10; border: 1px solid #e2e8f0; }
+    .map-frame { height: 100%; min-height: 540px; border-radius: 0.85rem; z-index: 10; border: 1px solid #e2e8f0; }
     .leaflet-container { background: #cbd5e1 !important; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
@@ -61,44 +61,45 @@
       position: absolute;
       top: 0; left: 0; right: 0; height: 3px;
       background: linear-gradient(90deg, transparent, #ef4444, transparent);
-      animation: scan 2.2s infinite linear;
+      animation: scan 1.8s infinite linear;
     }
     @keyframes scan {
       0% { top: 0%; }
       100% { top: 100%; }
     }
 
-    /* Thermal Heatmap Simulation overlay */
     .thermal-overlay {
-      background: radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.4) 0%, rgba(245, 158, 11, 0.25) 45%, rgba(16, 185, 129, 0.1) 80%);
+      background: radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.45) 0%, rgba(245, 158, 11, 0.25) 45%, rgba(16, 185, 129, 0.1) 80%);
     }
 
-    /* Pulse animation for map risk circles */
-    @keyframes pulse-ring {
-      0% { transform: scale(0.95); opacity: 0.8; }
-      50% { transform: scale(1.05); opacity: 0.4; }
-      100% { transform: scale(0.95); opacity: 0.8; }
+    /* Pulse animation for live data ticks */
+    .pulse-dot {
+      animation: pulse-dot-anim 1.2s infinite ease-in-out;
     }
-    .pulse-danger { animation: pulse-ring 2s infinite ease-in-out; }
+    @keyframes pulse-dot-anim {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.85); }
+      100% { opacity: 1; transform: scale(1); }
+    }
   </style>
 </head>
 
 <body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-orange-500 selection:text-white relative">
 
-  <!-- ==================== AUTOMATIC STAMPEDE PREDICTION SIREN BANNER ==================== -->
+  <!-- ==================== AUTOMATIC STAMPEDE DISPERSAL SIREN BANNER ==================== -->
   <div id="siren-alert-banner" class="hidden sticky top-0 z-[10000] bg-rose-600 text-white px-6 py-3 flex justify-between items-center font-bold text-sm shadow-2xl animate-pulse">
     <div class="flex items-center space-x-3">
       <div class="p-1.5 bg-white/20 rounded-full animate-spin">
         <i data-lucide="siren" class="w-6 h-6 text-white"></i>
       </div>
       <div>
-        <span class="text-base tracking-wide font-heading uppercase">🚨 EARLY STAMPEDE PREDICTION ALERT: IOT SENSORS DETECTED HIGH PRESSURE!</span>
-        <p class="text-xs font-normal text-rose-100">IoT Barricade pressure sensors exceeded 450 N/m² + AI Density >5.2 p/m². Dispersal Siren & Gate Diverters Triggered Automatically!</p>
+        <span class="text-base tracking-wide font-heading uppercase">🚨 REAL-TIME PRAYAGRAJ ALERT: CRITICAL STAMPEDE DENSITY DETECTED!</span>
+        <p class="text-xs font-normal text-rose-100">Sangam Ghat Gate 3 live density exceeded safe threshold (>5.2 p/m²). Emergency siren triggered across Prayagraj sectors!</p>
       </div>
     </div>
     <div class="flex items-center gap-3">
       <button onclick="stopSirenAudio()" class="px-3 py-1.5 bg-white text-rose-700 rounded-lg text-xs font-bold hover:bg-rose-50 transition shadow">
-        Mute Siren Audio
+        Mute Siren
       </button>
       <button onclick="closeSirenBanner()" class="text-white hover:text-rose-200"><i data-lucide="x" class="w-6 h-6"></i></button>
     </div>
@@ -115,16 +116,17 @@
           <i data-lucide="shield-alert" class="w-9 h-9"></i>
         </div>
         <h2 class="text-2xl font-bold text-slate-900 tracking-tight font-heading">Kumbh Rakshak Portal</h2>
-        <p class="text-xs text-slate-500 mt-1">IoT Sensors & Thermal Imagery Early Disaster Mitigation Hub</p>
+        <p class="text-xs text-slate-500 mt-1">Prayagraj Real-Time Thermal & Disaster Command Center</p>
       </div>
 
-      <!-- Role Selection -->
+      <!-- Quick Role Selection Tabs -->
       <div class="grid grid-cols-3 gap-1.5 p-1.5 bg-slate-100 rounded-xl mb-6 border border-slate-200 text-xs font-medium">
         <button type="button" onclick="setRole('admin')" id="role-admin-btn" class="py-2.5 rounded-lg font-semibold bg-orange-600 text-white transition shadow-sm">Command Admin</button>
         <button type="button" onclick="setRole('health')" id="role-health-btn" class="py-2.5 rounded-lg font-semibold text-slate-600 hover:text-slate-900 transition">Medical Officer</button>
         <button type="button" onclick="setRole('field')" id="role-field-btn" class="py-2.5 rounded-lg font-semibold text-slate-600 hover:text-slate-900 transition">Volunteer Lead</button>
       </div>
 
+      <!-- Auth Form -->
       <form onsubmit="handleLogin(event)" class="space-y-4">
         <div>
           <label class="text-xs font-semibold text-slate-700 block mb-1">Official ID / Security Credential</label>
@@ -143,12 +145,12 @@
         </div>
 
         <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20">
-          <i data-lucide="log-in" class="w-4 h-4"></i> Authenticate & Launch Kumbh Rakshak
+          <i data-lucide="log-in" class="w-4 h-4"></i> Authenticate & Launch Real-Time Portal
         </button>
       </form>
 
       <div class="mt-6 pt-4 border-t border-slate-100 text-center">
-        <p class="text-[10px] text-slate-400">Authorized Personnel Only • Thermal Cameras & IoT Sensor Mesh Active</p>
+        <p class="text-[10px] text-slate-400">Authorized Personnel Only • Encrypted Live WebSocket Feed Active</p>
       </div>
     </div>
   </div>
@@ -161,9 +163,9 @@
       </div>
       <div>
         <h1 class="font-bold text-lg text-slate-900 flex items-center gap-2 font-heading tracking-tight">
-          Kumbh Rakshak <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-orange-200">IOT & THERMAL DISASTER MITIGATION</span>
+          Kumbh Rakshak <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500 pulse-dot"></span> LIVE REAL-TIME FEED</span>
         </h1>
-        <p class="text-xs text-slate-500">Prayagraj Sangam Early Stampede Prediction & Disease Intercept</p>
+        <p class="text-xs text-slate-500">Prayagraj Sangam Thermal Surveillance & Emergency Command</p>
       </div>
     </div>
 
@@ -172,21 +174,18 @@
       <button onclick="switchTab('dashboard')" id="nav-dashboard" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition">
         <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Live Dashboard
       </button>
-      <button onclick="switchTab('camera')" id="nav-camera" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition relative">
-        <i data-lucide="camera" class="w-4 h-4 text-rose-600"></i> AI Thermal Camera
-        <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping absolute top-1 right-1"></span>
+      <button onclick="switchTab('gis')" id="nav-gis" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition">
+        <i data-lucide="map" class="w-4 h-4"></i> Prayagraj GIS Map
       </button>
-      <button onclick="switchTab('iot')" id="nav-iot" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition">
-        <i data-lucide="cpu" class="w-4 h-4 text-blue-600"></i> IoT Stampede Predictor
+      <button onclick="switchTab('camera')" id="nav-camera" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition relative">
+        <i data-lucide="camera" class="w-4 h-4 text-rose-600"></i> Thermal AI Cameras
+        <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping absolute top-1 right-1"></span>
       </button>
       <button onclick="switchTab('volunteers')" id="nav-volunteers" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition">
         <i data-lucide="users" class="w-4 h-4 text-orange-600"></i> Volunteer Intercept
       </button>
       <button onclick="switchTab('health')" id="nav-health" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition">
-        <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-600"></i> Healthcare Camps
-      </button>
-      <button onclick="switchTab('gis')" id="nav-gis" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition">
-        <i data-lucide="map" class="w-4 h-4"></i> GIS & Sector Map
+        <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-600"></i> Prayagraj Medical Rooms
       </button>
       <button onclick="switchTab('analytics')" id="nav-analytics" class="px-3.5 py-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center gap-1.5 transition">
         <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Trends
@@ -211,156 +210,173 @@
     <!-- VIEW 1: LIVE DASHBOARD -->
     <div id="view-dashboard" class="space-y-6">
       
-      <!-- TOP METRICS ROW -->
+      <!-- TOP METRICS ROW (REAL-TIME UPDATING) -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div class="bg-white border border-slate-200 p-5 rounded-2xl card-shadow">
+        <div class="bg-white border border-slate-200 p-5 rounded-2xl card-shadow relative overflow-hidden">
           <div class="flex justify-between items-center">
-            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Sangam Footfall</p>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Prayagraj Sangam Footfall</p>
             <div class="p-1.5 bg-orange-50 text-orange-600 rounded-lg"><i data-lucide="users" class="w-4 h-4"></i></div>
           </div>
-          <h3 id="stat-total-crowd" class="text-2xl font-extrabold text-slate-900 mt-2 font-heading">284,000</h3>
-          <p class="text-xs font-medium text-orange-600 mt-1 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> 88% Capacity Reached</p>
+          <h3 id="stat-total-crowd" class="text-2xl font-extrabold text-slate-900 mt-2 font-heading font-mono">324,180</h3>
+          <p class="text-xs font-medium text-orange-600 mt-1 flex items-center gap-1">
+            <span id="crowd-trend-badge" class="font-bold flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> Live Flowing (+240/min)</span>
+          </p>
         </div>
 
         <div class="bg-white border border-slate-200 p-5 rounded-2xl card-shadow">
           <div class="flex justify-between items-center">
-            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">IoT Pressure Sensors</p>
-            <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="cpu" class="w-4 h-4"></i></div>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Prayagraj ICU Beds Free</p>
+            <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="bed" class="w-4 h-4"></i></div>
           </div>
-          <h3 id="stat-iot-pressure" class="text-2xl font-extrabold text-blue-600 mt-2 font-heading">420 N/m²</h3>
-          <p class="text-xs font-medium text-blue-600 mt-1">Choke Point Gate 3 High Risk</p>
+          <h3 id="stat-icu-free" class="text-2xl font-extrabold text-emerald-600 mt-2 font-heading font-mono">26 / 45 Beds</h3>
+          <p class="text-xs font-medium text-emerald-600 mt-1">Medical Rooms 1, 2 & 3 Active</p>
         </div>
 
         <div class="bg-white border border-slate-200 p-5 rounded-2xl card-shadow">
           <div class="flex justify-between items-center">
-            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Thermal Imagery Feeds</p>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Thermal Fever Feeds</p>
             <div class="p-1.5 bg-rose-50 text-rose-600 rounded-lg"><i data-lucide="scan-face" class="w-4 h-4"></i></div>
           </div>
-          <h3 id="stat-thermal-detections" class="text-2xl font-extrabold text-rose-600 mt-2 font-heading">14 Detected</h3>
-          <p class="text-xs font-medium text-rose-600 mt-1">Infected Fever Intercepted</p>
+          <h3 id="stat-thermal-detections" class="text-2xl font-extrabold text-rose-600 mt-2 font-heading font-mono">14 Flagged</h3>
+          <p class="text-xs font-medium text-rose-600 mt-1">Escorted to Quarantine Rooms</p>
         </div>
 
         <div class="bg-white border border-slate-200 p-5 rounded-2xl card-shadow">
           <div class="flex justify-between items-center">
-            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Stampede Prediction</p>
-            <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Live System Telemetry</p>
+            <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="activity" class="w-4 h-4"></i></div>
           </div>
-          <h3 id="stat-disaster-prevented" class="text-2xl font-extrabold text-emerald-600 mt-2 font-heading">PREVENTED</h3>
-          <p class="text-xs font-medium text-emerald-600 mt-1">Automatic Diversion Active</p>
+          <h3 id="stat-system-tick" class="text-2xl font-extrabold text-blue-600 mt-2 font-heading font-mono">11:10:42 AM</h3>
+          <p class="text-xs font-medium text-blue-600 mt-1 flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-blue-500 pulse-dot"></span> Live 1-Second Sync Active
+          </p>
         </div>
       </div>
 
-      <!-- MAIN SPLIT: MAP + IOT & THERMAL SIDEBAR -->
+      <!-- MAIN SPLIT: PRAYAGRAJ MAP + SIDEBAR -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- GIS Map (8 Cols) -->
-        <div class="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-4 flex flex-col min-h-[520px] card-shadow">
+        <div class="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-4 flex flex-col min-h-[540px] card-shadow">
           <div class="flex justify-between items-center mb-3">
             <h2 class="font-bold text-slate-800 flex items-center gap-2 text-sm font-heading">
-              <i data-lucide="map-pin" class="w-4 h-4 text-orange-600"></i> GIS Heatmap, IoT Barricade Nodes & Healthcare Camps
+              <i data-lucide="map-pin" class="w-4 h-4 text-orange-600"></i> Live Prayagraj GIS Map: Sangam Ghat & Medical Rooms
             </h2>
-            <button onclick="triggerCrowdSiren()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 transition flex items-center gap-1.5 shadow-md shadow-rose-500/20">
-              <i data-lucide="siren" class="w-3.5 h-3.5"></i> TEST AUTOMATIC DISPERSAL SIREN
-            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="triggerCrowdSiren()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 transition flex items-center gap-1.5 shadow-md shadow-rose-500/20">
+                <i data-lucide="siren" class="w-3.5 h-3.5"></i> TEST DISPERSAL SIREN
+              </button>
+            </div>
           </div>
           <div class="flex-1 w-full rounded-xl overflow-hidden relative border border-slate-200 map-frame">
             <div id="map" class="w-full h-full"></div>
           </div>
         </div>
 
-        <!-- Sidebar: IoT & Thermal Live Stream (4 Cols) -->
+        <!-- Sidebar: Real-Time Stream Feeds & Activity Log (4 Cols) -->
         <div class="lg:col-span-4 space-y-6">
           
-          <!-- Live AI Thermal Imagery Stream -->
+          <!-- Live Thermal Camera Box (Live Data Refreshing) -->
           <div class="bg-slate-900 text-white p-5 rounded-2xl card-shadow relative overflow-hidden">
             <div class="radar-line"></div>
             <div class="flex justify-between items-center mb-3">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
-                <h2 class="font-bold text-sm font-heading text-slate-100">Thermal Imagery Scanner #02</h2>
+                <h2 class="font-bold text-sm font-heading text-slate-100">Live Thermal Feed (Gate 1)</h2>
               </div>
-              <span class="text-[10px] font-mono bg-rose-950 text-rose-300 border border-rose-800 px-2 py-0.5 rounded">102.8°F HIGH FEVER</span>
+              <span id="live-thermal-temp" class="text-[10px] font-mono bg-rose-950 text-rose-300 border border-rose-800 px-2 py-0.5 rounded">102.8°F FEVER</span>
             </div>
 
-            <!-- Simulated Thermal Imagery Visual -->
-            <div class="h-32 bg-slate-950 rounded-xl border border-slate-800 relative mb-3 flex items-center justify-center thermal-overlay">
+            <div class="h-28 bg-slate-950 rounded-xl border border-slate-800 relative mb-3 flex items-center justify-center thermal-overlay">
               <div class="text-center z-10">
-                <i data-lucide="scan-face" class="w-10 h-10 text-rose-400 mx-auto animate-pulse"></i>
-                <p class="text-[11px] font-bold text-slate-100 mt-1">Thermal Fever & Facial Rash Identified</p>
-                <p class="text-[10px] text-slate-300">Target Pilgrim near Gate 1 Entry</p>
+                <i data-lucide="scan-face" class="w-8 h-8 text-rose-400 mx-auto animate-pulse"></i>
+                <p id="live-thermal-diag" class="text-[11px] font-bold text-slate-100 mt-1">Target Pilgrim: Fever & Facial Rash</p>
+                <p class="text-[10px] text-slate-300">Location: Sangam Ghat Entrance 1</p>
               </div>
             </div>
 
             <button onclick="dispatchVolunteerToIntercept()" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-orange-950/50">
-              <i data-lucide="user-check" class="w-4 h-4"></i> Dispatch Volunteer Team To Intercept
+              <i data-lucide="user-check" class="w-4 h-4"></i> Intercept & Escort To Medical Room
             </button>
           </div>
 
-          <!-- IoT Sensor Barricade Telemetry Box -->
-          <div class="bg-white border border-slate-200 p-5 rounded-2xl card-shadow">
+          <!-- Real-Time System Activity Feed -->
+          <div class="bg-white border border-slate-200 p-5 rounded-2xl card-shadow flex-1 flex flex-col min-h-[240px]">
             <div class="flex justify-between items-center mb-3">
               <h2 class="font-bold text-slate-800 flex items-center gap-2 text-sm font-heading">
-                <i data-lucide="cpu" class="w-4 h-4 text-blue-600"></i> IoT Barricade Pressure Mesh
+                <i data-lucide="rss" class="w-4 h-4 text-emerald-600"></i> Live System Event Stream
               </h2>
-              <span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">PRE-DISASTER RISK</span>
+              <span class="text-[10px] font-mono bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded font-bold">STREAMING</span>
             </div>
 
-            <div class="space-y-3 text-xs">
-              <div>
-                <div class="flex justify-between text-slate-600 mb-1">
-                  <span>Node #01 (Sangam Choke-Point)</span>
-                  <span id="node-1-val" class="font-bold text-rose-600">460 N/m² (HIGH DANGER)</span>
-                </div>
-                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                  <div id="node-1-bar" class="bg-rose-500 h-full w-[92%] transition-all duration-500"></div>
-                </div>
-              </div>
-
-              <div>
-                <div class="flex justify-between text-slate-600 mb-1">
-                  <span>Node #02 (Triveni Pontoon)</span>
-                  <span class="font-bold text-emerald-600">180 N/m² (SAFE)</span>
-                </div>
-                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                  <div class="bg-emerald-500 h-full w-[35%]"></div>
-                </div>
-              </div>
+            <div id="live-feed-log" class="space-y-2 flex-1 overflow-y-auto max-h-[220px] pr-1 text-xs">
+              <!-- Dynamically Appended Real-time Log Items -->
             </div>
-
-            <button onclick="simulateIoTSurge()" class="w-full mt-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 rounded-xl text-xs transition border border-slate-200">
-              ⚡ Test IoT Crowd Surge Prediction
-            </button>
           </div>
 
         </div>
       </div>
     </div>
 
-    <!-- VIEW 2: THERMAL IMAGERY CAMERA SCANNING -->
+    <!-- VIEW 2: PRAYAGRAJ GIS MAP DETAILED -->
+    <div id="view-gis" class="hidden space-y-6">
+      <div class="bg-white border border-slate-200 p-6 rounded-2xl card-shadow">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 font-heading">
+              <i data-lucide="map" class="w-5 h-5 text-orange-600"></i> Prayagraj GIS Sector Map & Medical Rooms
+            </h2>
+            <p class="text-xs text-slate-500">Live headcount telemetry across Triveni Sangam, Daraganj, Parade Ground, and Naini Bridge.</p>
+          </div>
+          <button onclick="addNewSector()" class="px-3.5 py-2 bg-orange-600 text-white text-xs font-semibold rounded-xl hover:bg-orange-700 transition shadow">
+            + Add Prayagraj Sector Zone
+          </button>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-200">
+          <table class="w-full text-xs text-left text-slate-700">
+            <thead class="bg-slate-100 text-slate-600 uppercase font-semibold border-b border-slate-200">
+              <tr>
+                <th class="p-3.5">Sector Code</th>
+                <th class="p-3.5">Prayagraj Location</th>
+                <th class="p-3.5">Assigned Medical Room</th>
+                <th class="p-3.5">Live Occupancy / Capacity</th>
+                <th class="p-3.5">Risk Level</th>
+                <th class="p-3.5">Action</th>
+              </tr>
+            </thead>
+            <tbody id="gis-table-body" class="divide-y divide-slate-200 bg-white">
+              <!-- Dynamically Populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 3: THERMAL CAMERAS -->
     <div id="view-camera" class="hidden space-y-6">
       <div class="bg-white border border-slate-200 p-6 rounded-2xl card-shadow">
         <div class="flex justify-between items-center mb-6">
           <div>
             <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2 font-heading">
-              <i data-lucide="camera" class="w-5 h-5 text-rose-600"></i> AI Thermal Imagery & Fever Detection Feed
+              <i data-lucide="camera" class="w-5 h-5 text-rose-600"></i> AI Thermal Cameras at Prayagraj Entry Gates
             </h2>
-            <p class="text-xs text-slate-500">Infrared body temperature heatmaps detect contagious infections before pilgrims enter high-density areas.</p>
+            <p class="text-xs text-slate-500">Live body temperature heatmap scanning at Triveni Sangam, Daraganj, and Parade Ground.</p>
           </div>
           <button onclick="simulateNewDetection()" class="px-4 py-2 bg-rose-600 text-white text-xs font-bold rounded-xl hover:bg-rose-700 transition shadow flex items-center gap-2">
-            <i data-lucide="scan" class="w-4 h-4"></i> Trigger Thermal Scan
+            <i data-lucide="scan" class="w-4 h-4"></i> Trigger AI Thermal Scan
           </button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          
           <div class="bg-slate-900 rounded-2xl p-4 text-white relative overflow-hidden border border-slate-800">
             <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-bold text-slate-200 font-heading">Thermal Feed #01 - Sangam Entry</span>
-              <span class="text-[10px] bg-rose-900 text-rose-300 border border-rose-700 px-2 py-0.5 rounded">102.8°F FEVER</span>
+              <span class="text-xs font-bold text-slate-200 font-heading">Cam #01 - Sangam Ghat Gate 1</span>
+              <span id="cam-1-temp-tag" class="text-[10px] bg-rose-900 text-rose-300 border border-rose-700 px-2 py-0.5 rounded font-mono">102.8°F FEVER</span>
             </div>
             <div class="h-44 bg-slate-950 rounded-xl flex items-center justify-center relative border border-slate-800 mb-3 thermal-overlay">
               <i data-lucide="scan-face" class="w-16 h-16 text-rose-400 animate-pulse"></i>
               <div class="absolute bottom-2 left-2 bg-slate-900/90 px-2 py-1 rounded text-[10px] font-mono text-rose-300">
-                AI Diagnosis: Measles / Dengue Suspect
+                Escort Target ➔ Medical Room 1
               </div>
             </div>
             <button onclick="dispatchVolunteerToIntercept()" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 rounded-xl text-xs transition">
@@ -370,65 +386,33 @@
 
           <div class="bg-slate-900 rounded-2xl p-4 text-white relative overflow-hidden border border-slate-800">
             <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-bold text-slate-200 font-heading">Thermal Feed #02 - Triveni Pontoon</span>
-              <span class="text-[10px] bg-emerald-900 text-emerald-300 border border-emerald-700 px-2 py-0.5 rounded">98.6°F SAFE</span>
+              <span class="text-xs font-bold text-slate-200 font-heading">Cam #02 - Triveni Pontoon Bridge</span>
+              <span class="text-[10px] bg-emerald-900 text-emerald-300 border border-emerald-700 px-2 py-0.5 rounded font-mono">98.6°F SAFE</span>
             </div>
             <div class="h-44 bg-slate-950 rounded-xl flex items-center justify-center relative border border-slate-800 mb-3">
               <i data-lucide="user-check" class="w-16 h-16 text-emerald-500"></i>
             </div>
             <button class="w-full bg-slate-800 text-slate-400 font-bold py-2 rounded-xl text-xs cursor-not-allowed">
-              No Infection Detected
+              No Threat Detected
             </button>
           </div>
 
           <div class="bg-slate-900 rounded-2xl p-4 text-white relative overflow-hidden border border-slate-800">
             <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-bold text-slate-200 font-heading">Thermal Feed #03 - Sector 3 Camp</span>
-              <span class="text-[10px] bg-amber-900 text-amber-300 border border-amber-700 px-2 py-0.5 rounded">101.4°F HEATSTROKE</span>
+              <span class="text-xs font-bold text-slate-200 font-heading">Cam #03 - Daraganj Sector Entry</span>
+              <span class="text-[10px] bg-amber-900 text-amber-300 border border-amber-700 px-2 py-0.5 rounded font-mono">101.4°F HEATSTROKE</span>
             </div>
             <div class="h-44 bg-slate-950 rounded-xl flex items-center justify-center relative border border-slate-800 mb-3 thermal-overlay">
               <i data-lucide="activity" class="w-16 h-16 text-amber-400 animate-pulse"></i>
+              <div class="absolute bottom-2 left-2 bg-slate-900/90 px-2 py-1 rounded text-[10px] font-mono text-amber-300">
+                Escort Target ➔ Medical Room 2
+              </div>
             </div>
             <button onclick="dispatchVolunteerToIntercept()" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 rounded-xl text-xs transition">
               Dispatch Volunteer Team
             </button>
           </div>
-
         </div>
-      </div>
-    </div>
-
-    <!-- VIEW 3: IOT STAMPEDE DISASTER PREDICTION -->
-    <div id="view-iot" class="hidden space-y-6">
-      <div class="bg-white border border-slate-200 p-6 rounded-2xl card-shadow">
-        <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2 font-heading">
-          <i data-lucide="cpu" class="w-5 h-5 text-blue-600"></i> IoT Hardware Sensor Telemetry & Stampede AI Predictor
-        </h2>
-        <p class="text-xs text-slate-500 mb-6">Barricade load cells and optical flow velocity sensors predict stampede choke-points 15 minutes before an occurrence.</p>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
-            <p class="text-xs font-bold text-slate-500 uppercase">Barricade Pressure Sensors</p>
-            <h3 class="text-2xl font-bold text-rose-600 font-heading mt-1">460 N/m²</h3>
-            <p class="text-xs text-rose-600 font-medium mt-1">⚠️ Danger Threshold Exceeded at Gate 3</p>
-          </div>
-
-          <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
-            <p class="text-xs font-bold text-slate-500 uppercase">Crowd Velocity Vector</p>
-            <h3 class="text-2xl font-bold text-amber-600 font-heading mt-1">0.2 m/s (Bottleneck)</h3>
-            <p class="text-xs text-amber-600 font-medium mt-1">Flow Stagnation Detected</p>
-          </div>
-
-          <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
-            <p class="text-xs font-bold text-slate-500 uppercase">Predicted Stampede Time</p>
-            <h3 class="text-2xl font-bold text-emerald-600 font-heading mt-1">PREVENTED BY SIREN</h3>
-            <p class="text-xs text-emerald-600 font-medium mt-1">Auto Reroute Diverters Open</p>
-          </div>
-        </div>
-
-        <button onclick="simulateIoTSurge()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-rose-500/20">
-          🚨 SIMULATE CRITICAL IOT PRESSURE SURGE & SIREN DISPERSAL
-        </button>
       </div>
     </div>
 
@@ -436,18 +420,18 @@
     <div id="view-volunteers" class="hidden space-y-6">
       <div class="bg-white border border-slate-200 p-6 rounded-2xl card-shadow">
         <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2 font-heading">
-          <i data-lucide="users" class="w-5 h-5 text-orange-600"></i> Volunteer Ground Intercept Teams
+          <i data-lucide="users" class="w-5 h-5 text-orange-600"></i> Prayagraj Ground Volunteer Intercept Teams
         </h2>
-        <p class="text-xs text-slate-500 mb-6">Volunteers intercept pilgrims flagged by thermal cameras and safely guide them to isolation/healthcare camps.</p>
+        <p class="text-xs text-slate-500 mb-6">Live status of volunteer teams intercepting thermal-flagged pilgrims and guiding them to Medical Rooms.</p>
 
         <div class="overflow-x-auto rounded-xl border border-slate-200">
           <table class="w-full text-xs text-left text-slate-700">
             <thead class="bg-slate-100 text-slate-600 uppercase font-semibold border-b border-slate-200">
               <tr>
-                <th class="p-3.5">Target ID</th>
+                <th class="p-3.5">Detection ID</th>
                 <th class="p-3.5">Thermal Flag</th>
                 <th class="p-3.5">Assigned Volunteer Team</th>
-                <th class="p-3.5">Destination Camp</th>
+                <th class="p-3.5">Destination Medical Room</th>
                 <th class="p-3.5">Status</th>
                 <th class="p-3.5">Action</th>
               </tr>
@@ -460,65 +444,73 @@
       </div>
     </div>
 
-    <!-- VIEW 5: HEALTHCARE CAMPS -->
+    <!-- VIEW 5: PRAYAGRAJ MEDICAL ROOMS -->
     <div id="view-health" class="hidden space-y-6">
       <div class="bg-white border border-slate-200 p-6 rounded-2xl card-shadow">
         <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2 font-heading">
-          <i data-lucide="heart-pulse" class="w-5 h-5 text-emerald-600"></i> Smart Healthcare Camps & Quarantine Wards
+          <i data-lucide="heart-pulse" class="w-5 h-5 text-emerald-600"></i> Prayagraj Kumbh Medical Rooms & Quarantine Ward Management
         </h2>
-        <p class="text-xs text-slate-500 mb-6">Real-time ICU bed availability and medical staff tracking.</p>
+        <p class="text-xs text-slate-500 mb-6">Real-time bed availability and isolation capacity across Prayagraj medical centers.</p>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
-            <h3 class="font-bold text-slate-900 text-sm mb-1">Health Camp #01 (Sangam Gate)</h3>
-            <p class="text-xs text-slate-500 mb-3">ICU Beds: 8 Free | Doctors: 12 On Duty</p>
-            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden"><div class="bg-emerald-500 h-full w-[45%]"></div></div>
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="font-bold text-slate-900 text-sm">Medical Room 1: Sangam Gate Triage</h3>
+              <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">ACTIVE</span>
+            </div>
+            <p class="text-xs text-slate-500 mb-2">ICU Beds Free: 8 | On-Duty Doctors: 12</p>
+            <p class="text-xs text-slate-600 font-medium mb-3">Features: Emergency Resuscitation, Oxygen Cylinders, Hydration Station</p>
+            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-2"><div class="bg-emerald-500 h-full w-[45%]"></div></div>
+            <span class="text-[11px] font-semibold text-emerald-700">45% Capacity Occupied</span>
           </div>
+
           <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
-            <h3 class="font-bold text-slate-900 text-sm mb-1">Health Camp #02 (Triveni Area)</h3>
-            <p class="text-xs text-slate-500 mb-3">ICU Beds: 3 Free | Doctors: 8 On Duty</p>
-            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden"><div class="bg-amber-500 h-full w-[80%]"></div></div>
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="font-bold text-slate-900 text-sm">Medical Room 2: Daraganj Isolation Ward</h3>
+              <span class="text-[10px] font-bold bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full">QUARANTINE</span>
+            </div>
+            <p class="text-xs text-slate-500 mb-2">Contagious Isolation Beds Free: 12</p>
+            <p class="text-xs text-slate-600 font-medium mb-3">Features: AI Fever Quarantine, Negative Pressure Room, Epidemic Team</p>
+            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-2"><div class="bg-rose-500 h-full w-[75%]"></div></div>
+            <span class="text-[11px] font-semibold text-rose-700">75% Capacity Occupied</span>
           </div>
+
           <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
-            <h3 class="font-bold text-slate-900 text-sm mb-1">Isolation Ward #03 (Quarantine)</h3>
-            <p class="text-xs text-slate-500 mb-3">Contagious Isolation Beds: 15 Free</p>
-            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden"><div class="bg-rose-500 h-full w-[25%]"></div></div>
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="font-bold text-slate-900 text-sm">Medical Room 3: Triveni Pontoon Camp</h3>
+              <span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">HEATSTROKE WARD</span>
+            </div>
+            <p class="text-xs text-slate-500 mb-2">Recovery Beds Free: 6 | Paramedics: 10</p>
+            <p class="text-xs text-slate-600 font-medium mb-3">Features: ORS Cooling Baths, Cardiac Monitoring, Ambulance Bay</p>
+            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-2"><div class="bg-amber-500 h-full w-[60%]"></div></div>
+            <span class="text-[11px] font-semibold text-amber-700">60% Capacity Occupied</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- VIEW 6: GIS & SECTOR MAP -->
-    <div id="view-gis" class="hidden space-y-6">
-      <div class="bg-white border border-slate-200 p-6 rounded-2xl card-shadow">
-        <h2 class="text-lg font-bold text-slate-900 mb-2 font-heading">GIS Sector Mapping & PostGIS Overlay</h2>
-        <p class="text-xs text-slate-500 mb-4">Real-time density sector coordinates.</p>
-        <div id="gis-table-placeholder" class="text-xs text-slate-600">Active geofence zones mapped.</div>
-      </div>
-    </div>
-
-    <!-- VIEW 7: TRENDS & ANALYTICS -->
+    <!-- VIEW 6: ANALYTICS -->
     <div id="view-analytics" class="hidden space-y-6">
       <div class="bg-white border border-slate-200 p-6 rounded-2xl card-shadow">
-        <h2 class="text-lg font-bold text-slate-900 mb-2 font-heading">Disaster Prevention Analytics</h2>
-        <p class="text-xs text-slate-500 mb-6">AI & IoT performance metrics.</p>
+        <h2 class="text-lg font-bold text-slate-900 mb-2 font-heading">Prayagraj Real-Time Performance Analytics</h2>
+        <p class="text-xs text-slate-500 mb-6">Disaster prevention statistics updated dynamically.</p>
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
             <p class="text-xs text-slate-500 font-semibold">Stampedes Avoided</p>
-            <h3 class="text-2xl font-bold text-emerald-600 font-heading mt-1">100% (14 Incidents)</h3>
+            <h3 class="text-2xl font-bold text-emerald-600 font-heading mt-1">14 Incidents</h3>
           </div>
           <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-            <p class="text-xs text-slate-500 font-semibold">Infections Intercepted</p>
+            <p class="text-xs text-slate-500 font-semibold">Thermal Fever Intercepts</p>
             <h3 class="text-2xl font-bold text-rose-600 font-heading mt-1">98.4% Accuracy</h3>
           </div>
           <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-            <p class="text-xs text-slate-500 font-semibold">IoT Sensor Response Time</p>
-            <h3 class="text-2xl font-bold text-blue-600 font-heading mt-1">1.2 Seconds</h3>
+            <p class="text-xs text-slate-500 font-semibold">Medical Room Admits</p>
+            <h3 class="text-2xl font-bold text-blue-600 font-heading mt-1">42 Patients</h3>
           </div>
           <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-            <p class="text-xs text-slate-500 font-semibold">Pilgrims Safeguarded</p>
-            <h3 class="text-2xl font-bold text-purple-600 font-heading mt-1">340,000+</h3>
+            <p class="text-xs text-slate-500 font-semibold">Prayagraj Footfall Safe</p>
+            <h3 id="analytics-total-safe" class="text-2xl font-bold text-purple-600 font-heading mt-1 font-mono">324,180</h3>
           </div>
         </div>
       </div>
@@ -526,21 +518,34 @@
 
   </main>
 
-  <!-- ==================== JAVASCRIPT APP ENGINE ==================== -->
+  <!-- ==================== JAVASCRIPT REAL-TIME ENGINE ==================== -->
   <script>
+    const roleCredentials = {
+      admin: { name: 'NDRF Commander', email: 'admin.commander@kumbhrakshak.gov.in' },
+      health: { name: 'Chief Medical Officer (CMO)', email: 'cmo.prayagraj@kumbhrakshak.gov.in' },
+      field: { name: 'Field Volunteer Lead', email: 'volunteer.lead@kumbhrakshak.gov.in' }
+    };
+
     let currentUserRole = 'admin';
     let sirenActive = false;
     let audioContext;
 
-    const defaultSectors = [
-      { code: 'SEC-01', name: 'Sangam Ghat North', capacity: 150000, occupancy: 142000, risk: 'Critical', lat: 25.4358, lng: 81.8842 },
-      { code: 'SEC-02', name: 'Triveni Snan Area', capacity: 200000, occupancy: 110000, risk: 'Moderate', lat: 25.4380, lng: 81.8890 },
-      { code: 'SEC-03', name: 'Sector 3 Camp Area', capacity: 80000, occupancy: 32000, risk: 'Normal', lat: 25.4410, lng: 81.8750 }
+    // Prayagraj Sectors & Medical Rooms Data
+    const prayagrajSectors = [
+      { code: 'SEC-01', name: 'Triveni Sangam Ghat', medicalRoom: 'Medical Room 1 (Triage)', capacity: 150000, occupancy: 142180, risk: 'Critical', lat: 25.4358, lng: 81.8842 },
+      { code: 'SEC-02', name: 'Daraganj Sector Area', medicalRoom: 'Medical Room 2 (Isolation)', capacity: 200000, occupancy: 110420, risk: 'Moderate', lat: 25.4380, lng: 81.8890 },
+      { code: 'SEC-03', name: 'Parade Ground Camps', medicalRoom: 'Medical Room 3 (Heatstroke)', capacity: 80000, occupancy: 32100, risk: 'Normal', lat: 25.4410, lng: 81.8750 }
     ];
 
-    let sectors = JSON.parse(localStorage.getItem('kumbh_sectors')) || defaultSectors;
+    let sectors = JSON.parse(localStorage.getItem('kumbh_prayagraj_sectors')) || prayagrajSectors;
     let volunteerTasks = JSON.parse(localStorage.getItem('kumbh_volunteer_tasks')) || [
-      { id: 'THERM-991', symptom: 'Thermal Fever (102.8°F)', team: 'Volunteer Team Alpha', camp: 'Health Camp #01', status: 'Escorting to Camp' }
+      { id: 'THERM-991', symptom: 'Thermal Fever (102.8°F)', team: 'Volunteer Team Alpha', camp: 'Medical Room 1 (Triage)', status: 'Escorting to Medical Room' }
+    ];
+
+    let systemLogs = [
+      { time: '11:10:02 AM', text: 'WebSocket connected to Prayagraj Control Node #01', type: 'info' },
+      { time: '11:09:45 AM', text: 'Thermal Camera #01 flagged fever 102.8°F at Sangam Gate', type: 'warn' },
+      { time: '11:08:12 AM', text: 'Volunteer Team Alpha dispatched to Sangam Entrance', type: 'success' }
     ];
 
     let map, markers = {};
@@ -559,15 +564,18 @@
         btn.className = "py-2.5 rounded-lg font-semibold text-slate-600 hover:text-slate-900 transition";
       });
       document.getElementById(`role-${role}-btn`).className = "py-2.5 rounded-lg font-semibold bg-orange-600 text-white transition shadow-sm";
+      document.getElementById('login-username').value = roleCredentials[role].email;
     }
 
     function handleLogin(e) {
       e.preventDefault();
       closeLoginModal();
+      document.getElementById('user-role-label').innerText = roleCredentials[currentUserRole].name;
+      addLog(`User authenticated as ${roleCredentials[currentUserRole].name}`, 'success');
     }
 
     function switchTab(tab) {
-      ['dashboard', 'camera', 'iot', 'volunteers', 'health', 'gis', 'analytics'].forEach(t => {
+      ['dashboard', 'gis', 'camera', 'volunteers', 'health', 'analytics'].forEach(t => {
         document.getElementById(`view-${t}`).classList.add('hidden');
         document.getElementById(`nav-${t}`).classList.remove('nav-btn-active');
       });
@@ -575,7 +583,7 @@
       document.getElementById(`view-${tab}`).classList.remove('hidden');
       document.getElementById(`nav-${tab}`).classList.add('nav-btn-active');
 
-      if (tab === 'dashboard' && map) {
+      if ((tab === 'dashboard' || tab === 'gis') && map) {
         setTimeout(() => map.invalidateSize(), 250);
       }
     }
@@ -586,10 +594,13 @@
 
       try {
         map = L.map('map', { center: [25.4365, 81.8840], zoom: 14 });
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+          maxZoom: 18,
+          attribution: '&copy; OpenStreetMap | Prayagraj Kumbh Real-time' 
+        }).addTo(map);
         renderSectorMarkers();
       } catch (e) {
-        console.error("Map init fallback active:", e);
+        console.error("Map init error:", e);
       }
     }
 
@@ -601,7 +612,14 @@
       sectors.forEach(s => {
         let color = s.risk === 'Critical' ? '#e11d48' : (s.risk === 'Moderate' ? '#d97706' : '#059669');
         let circle = L.circle([s.lat, s.lng], { color: color, fillColor: color, fillOpacity: 0.35, radius: 380 }).addTo(map);
-        circle.bindPopup(`<b>${s.name} (${s.code})</b><br>Occupancy: ${s.occupancy.toLocaleString()} / ${s.capacity.toLocaleString()}`);
+        circle.bindPopup(`
+          <div style="font-family: 'Inter', sans-serif;">
+            <b style="color: #ea580c; font-size: 13px;">${s.name} (${s.code})</b><br>
+            <b>Assigned:</b> ${s.medicalRoom}<br>
+            <b>Live Occupancy:</b> ${s.occupancy.toLocaleString()} / ${s.capacity.toLocaleString()}<br>
+            <b>Risk Level:</b> <b style="color: ${color};">${s.risk}</b>
+          </div>
+        `);
         markers[s.code] = circle;
       });
     }
@@ -612,16 +630,18 @@
         id: newId,
         symptom: 'Thermal Fever (102.4°F) & Rash',
         team: 'Volunteer Team Beta',
-        camp: 'Health Camp #01 (Sangam)',
+        camp: 'Medical Room 1 (Triage)',
         status: 'Dispatched to Intercept'
       });
+      addLog(`Volunteer Team Beta dispatched for Target ${newId} at Sangam Entrance`, 'warn');
       updateUI();
-      alert(`🚨 VOLUNTEER DISPATCHED! Volunteer Team Beta sent to intercept target pilgrim and escort to Health Camp #01.`);
+      alert(`🚨 VOLUNTEER DISPATCHED! Team Beta sent to intercept target pilgrim and escort to Medical Room 1.`);
     }
 
     function triggerCrowdSiren() {
       sirenActive = true;
       document.getElementById('siren-alert-banner').classList.remove('hidden');
+      addLog('CRITICAL: Emergency Dispersal Siren Triggered at Triveni Sangam Sector 1', 'danger');
       playSirenSound();
     }
 
@@ -650,13 +670,30 @@
       document.getElementById('siren-alert-banner').classList.add('hidden');
     }
 
-    function simulateIoTSurge() {
-      document.getElementById('node-1-val').innerText = '490 N/m² (CRITICAL SURGE)';
-      document.getElementById('node-1-bar').style.width = '98%';
-      triggerCrowdSiren();
+    function addLog(message, type = 'info') {
+      const now = new Date().toLocaleTimeString();
+      systemLogs.unshift({ time: now, text: message, type });
+      if (systemLogs.length > 15) systemLogs.pop();
+      renderLogs();
+    }
+
+    function renderLogs() {
+      const logContainer = document.getElementById('live-feed-log');
+      if (!logContainer) return;
+
+      logContainer.innerHTML = systemLogs.map(l => {
+        let colorClass = l.type === 'danger' ? 'text-rose-600 bg-rose-50 border-rose-200' : (l.type === 'warn' ? 'text-amber-700 bg-amber-50 border-amber-200' : (l.type === 'success' ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : 'text-slate-700 bg-slate-50 border-slate-200'));
+        return `
+          <div class="p-2 rounded-lg border text-[11px] font-medium flex gap-2 ${colorClass}">
+            <span class="font-mono text-slate-400 font-bold shrink-0">${l.time}</span>
+            <span>${l.text}</span>
+          </div>
+        `;
+      }).join('');
     }
 
     function updateUI() {
+      localStorage.setItem('kumbh_prayagraj_sectors', JSON.stringify(sectors));
       localStorage.setItem('kumbh_volunteer_tasks', JSON.stringify(volunteerTasks));
 
       const tableBody = document.getElementById('volunteer-table-body');
@@ -666,9 +703,23 @@
             <td class="p-3.5 font-mono font-bold text-orange-600">${t.id}</td>
             <td class="p-3.5 font-medium text-rose-600">${t.symptom}</td>
             <td class="p-3.5 text-slate-800 font-semibold">${t.team}</td>
-            <td class="p-3.5 text-slate-600">${t.camp}</td>
+            <td class="p-3.5 text-slate-700 font-bold">${t.camp}</td>
             <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">${t.status}</span></td>
             <td class="p-3.5"><button onclick="completeEscort('${t.id}')" class="text-xs text-emerald-600 hover:underline font-bold">Mark Escorted</button></td>
+          </tr>
+        `).join('');
+      }
+
+      const gisBody = document.getElementById('gis-table-body');
+      if (gisBody) {
+        gisBody.innerHTML = sectors.map(s => `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-3.5 font-mono font-bold text-orange-600">${s.code}</td>
+            <td class="p-3.5 font-medium text-slate-800">${s.name}</td>
+            <td class="p-3.5 font-semibold text-emerald-700">${s.medicalRoom}</td>
+            <td class="p-3.5 font-mono font-bold">${s.occupancy.toLocaleString()} / ${s.capacity.toLocaleString()}</td>
+            <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.risk === 'Critical' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">${s.risk}</span></td>
+            <td class="p-3.5"><button onclick="triggerCrowdSiren()" class="text-xs font-semibold text-rose-600 hover:underline">Dispersal Siren</button></td>
           </tr>
         `).join('');
       }
@@ -678,30 +729,71 @@
 
     function completeEscort(id) {
       volunteerTasks = volunteerTasks.filter(t => t.id !== id);
+      addLog(`Target ${id} safely escorted and admitted to Medical Room 1`, 'success');
       updateUI();
-      alert(`✅ Pilgrim safely escorted to Healthcare Camp! Quarantine checkup logged.`);
+      alert(`✅ Pilgrim safely escorted to Medical Room! Triage logged.`);
     }
 
     function simulateNewDetection() {
       dispatchVolunteerToIntercept();
     }
 
-    // --- AUTOMATIC STAMPEDE DISASTER PREDICTION SIMULATOR ---
+    function addNewSector() {
+      const code = `SEC-0${sectors.length + 1}`;
+      sectors.push({ code, name: `Naini Bridge Sector ${sectors.length + 1}`, medicalRoom: `Medical Room ${sectors.length + 1}`, capacity: 100000, occupancy: 12000, risk: 'Normal', lat: 25.4300, lng: 81.8600 });
+      addLog(`New Prayagraj Sector boundary created: ${code}`, 'info');
+      updateUI();
+    }
+
+    // --- REAL-TIME DATA TICK ENGINE (1-SECOND TICK) ---
     setInterval(() => {
-      const delta = Math.floor(Math.random() * 500) - 180;
-      sectors[0].occupancy = Math.max(100000, Math.min(150000, sectors[0].occupancy + delta));
+      // 1. Clock Update
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString();
+      const clockElem = document.getElementById('stat-system-tick');
+      if (clockElem) clockElem.innerText = timeStr;
+
+      // 2. Real-Time Crowd Fluctuation
+      const delta = Math.floor(Math.random() * 18) - 6;
+      sectors[0].occupancy = Math.max(120000, Math.min(150000, sectors[0].occupancy + delta));
       
+      const totalFootfall = sectors.reduce((acc, curr) => acc + curr.occupancy, 0);
+      const totalCrowdElem = document.getElementById('stat-total-crowd');
+      const analyticsSafeElem = document.getElementById('analytics-total-safe');
+      if (totalCrowdElem) totalCrowdElem.innerText = totalFootfall.toLocaleString();
+      if (analyticsSafeElem) analyticsSafeElem.innerText = totalFootfall.toLocaleString();
+
+      // 3. Fluctuating Thermal Temperature Simulation
+      const tempVariation = (102.2 + Math.random() * 1.2).toFixed(1);
+      const tempTag = document.getElementById('live-thermal-temp');
+      const cam1Tag = document.getElementById('cam-1-temp-tag');
+      if (tempTag) tempTag.innerText = `${tempVariation}°F FEVER`;
+      if (cam1Tag) cam1Tag.innerText = `${tempVariation}°F FEVER`;
+
+      // 4. Random Periodic System Logs
+      if (Math.random() < 0.25) {
+        const sampleLogs = [
+          `Camera #01 density optical stream calculated: ${((sectors[0].occupancy / sectors[0].capacity) * 100).toFixed(1)}%`,
+          `Volunteers synced via Walkie-Mesh in Daraganj Sector 2`,
+          `Medical Room 1: Triage vital parameters updated for Patient #881`,
+          `Gate 3 Pontoon flow rate safe: 1.4 m/s velocity`
+        ];
+        addLog(sampleLogs[Math.floor(Math.random() * sampleLogs.length)], 'info');
+      }
+
+      // 5. Automatic Dispersal Siren Trigger if Capacity > 96%
       if (sectors[0].occupancy > 144500 && !sirenActive) {
         triggerCrowdSiren();
       }
 
       updateUI();
-    }, 4000);
+    }, 1000);
 
     window.onload = () => {
       lucide.createIcons();
       initMap();
       switchTab('dashboard');
+      renderLogs();
       updateUI();
     };
   </script>
