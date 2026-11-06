@@ -1,231 +1,213 @@
-# 🛡️ Kumbh Rakshak (कुंभ रक्षक)
+# Kumbh Rakshak (कुंभ रक्षक)
 
-**An AI-assisted platform for crowd safety, early risk detection, and medical emergency coordination at large-scale pilgrimages.**
+> **Better situational awareness. Faster coordination. Safer pilgrimages.**
 
-🔗 **Live MVP:** https://atharv-mu.github.io/Kumbh-Rakshak/
+An AI-assisted platform concept for crowd safety, early risk detection and medical emergency coordination at large-scale pilgrimages.
 
-![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)
-![Tech Stack](https://img.shields.io/badge/Tech-HTML5%20%7C%20JavaScript%20%7C%20Tailwind%20%7C%20Leaflet-blue.svg)
-![Status](https://img.shields.io/badge/Status-Hackathon%20MVP-emerald.svg)
+<p align="center">
+  <a href="https://atharv-mu.github.io/Kumbh-Rakshak/"><img src="https://img.shields.io/badge/Live_MVP-Visit_Site-ff9800?style=for-the-badge&logo=githubpages&logoColor=white" alt="Live MVP"></a>
+  <img src="https://img.shields.io/badge/License-MIT-orange?style=for-the-badge" alt="MIT License">
+  <img src="https://img.shields.io/badge/Status-Hackathon_MVP-10b981?style=for-the-badge" alt="Hackathon MVP">
+</p>
+
+**Live MVP:** [atharv-mu.github.io/Kumbh-Rakshak](https://atharv-mu.github.io/Kumbh-Rakshak/)
 
 ---
 
-## About the Project
+## Contents
 
-Managing crowds at large religious gatherings like the Kumbh Mela is a major challenge. Millions of pilgrims gather in a limited area, making crowd congestion, medical emergencies, and delayed response serious safety concerns.
+- [About the project](#about-the-project)
+- [The problem](#the-problem)
+- [Key features](#key-features)
+- [Technology stack](#technology-stack)
+- [How it works](#how-it-works)
+- [Getting started](#getting-started)
+- [Current limitations](#current-limitations)
+- [Future scope](#future-scope)
+- [Privacy, security and safety](#privacy-security-and-safety)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
 
-**Kumbh Rakshak** is a web-based dashboard designed to help address these challenges through a centralized crowd monitoring and emergency coordination system.
+---
 
-The platform brings together simulated thermal screening, GIS-based crowd density monitoring, automated risk alerts, medical resource tracking, and volunteer task management. It aims to help authorities identify potential risks earlier and coordinate responses more effectively.
+## About the project
 
-The project is currently a hackathon MVP that demonstrates how technology can support safer and better-organized pilgrimages.
+Managing crowds at large religious gatherings such as the Kumbh Mela is a major challenge. Millions of pilgrims gather in a limited area, so congestion, medical emergencies and slow response times become serious safety concerns.
 
-## The Problem
+Kumbh Rakshak is a web-based dashboard that brings crowd monitoring and emergency coordination into one place. It combines simulated thermal screening, map-based crowd density monitoring, automated risk alerts, medical resource tracking and volunteer task management, with the goal of helping authorities spot risks earlier and respond in a more coordinated way.
+
+It is a hackathon MVP that demonstrates how technology could support safer, better-organised pilgrimages.
+
+## The problem
 
 Large public gatherings create several challenges for crowd management and emergency response:
 
-- **Crowd congestion:** Narrow pathways, ghat entrances, bridges, and other bottlenecks can become overcrowded.
-- **Stampede risks:** Sudden changes in crowd movement can create dangerous situations.
-- **Medical emergencies:** Heat exhaustion, elevated body temperature, dehydration, and other health concerns require timely attention.
-- **Delayed coordination:** Communication gaps between control rooms, medical teams, and volunteers can slow down response times.
-- **Limited real-time visibility:** Managing crowd conditions and medical resources across multiple locations can be difficult without a centralized system.
+- **Crowd congestion:** narrow pathways, ghat entrances, bridges and other bottlenecks can become overcrowded.
+- **Stampede risk:** sudden changes in crowd movement can create dangerous situations.
+- **Medical emergencies:** heat exhaustion, high body temperature, dehydration and other health problems need timely attention.
+- **Delayed coordination:** communication gaps between control rooms, medical teams and volunteers can slow the response.
+- **Limited real-time visibility:** without a central system, it is hard to track crowd conditions and medical resources across many locations.
 
-Kumbh Rakshak aims to bring these operations into one dashboard, helping teams monitor conditions, identify potential risks, and coordinate emergency tasks.
+---
 
-## Key Features
+## Key features
 
-### 1. Multi-City Pilgrimage Management
+### 1. Multi-city pilgrimage management
 
-The dashboard supports four major pilgrimage locations, with designated areas for monitoring and emergency coordination.
+The dashboard covers four pilgrimage cities, each with designated areas for monitoring and emergency coordination.
 
-- **Prayagraj:** Triveni Ghat, Daraganj, Parade Ground
-- **Haridwar:** Har Ki Pauri, Subhash Ghat, Bairagi Camp
-- **Ujjain:** Ram Ghat, Mahakal Corridor, Narsinghat
-- **Nashik:** Ramkund Main Ghat, Panchavati, Sadhugram
-
-Users can switch between locations to explore the monitoring interface and its simulated operational data.
-
-### 2. Thermal Screening and Medical Alerts
-
-The prototype simulates thermal camera feeds to demonstrate how abnormal temperature readings can be flagged for medical review.
-
-- Flags simulated temperature readings above **102°F**.
-- Generates follow-up tasks for flagged individuals.
-- Connects alerts with designated medical facilities.
-- Demonstrates the workflow from initial detection to medical handover.
-
-*Note: This feature uses simulated data. It does not represent a validated AI thermal screening system, and temperature readings alone cannot confirm an infection.*
-
-### 3. GIS-Based Crowd Density Monitoring
-
-The dashboard uses Leaflet.js and OpenStreetMap to visualize crowd conditions across designated sectors.
-
-Crowd levels are displayed using a simple color-coded system:
-
-- 🟢 **Normal:** Crowd levels are within the configured operating range.
-- 🟡 **Moderate:** Crowd levels require closer monitoring.
-- 🔴 **Critical:** Crowd levels have reached a configured alert threshold.
-
-Interactive map tooltips display sector information, including estimated headcount, thermal risk indicators, and assigned medical facilities.
-
-### 4. Early Warning and Crowd Alerts
-
-Kumbh Rakshak includes a threshold-based alert mechanism to demonstrate how overcrowded sectors can be identified.
-
-- Monitors simulated crowd occupancy.
-- Triggers an alert when occupancy exceeds **96% of the configured sector capacity**.
-- Generates warning audio using the browser's Web Audio API.
-- Helps operators identify areas that may require additional attention.
-
-The thresholds are intended for demonstration purposes and are not universal safety standards. Real-world crowd dispersal decisions require verified field information and approved emergency procedures.
-
-### 5. Medical Resource Monitoring
-
-The medical dashboard provides an overview of simulated medical resources and response activities.
-
-- Monitor ICU bed and isolation ward availability.
-- Review medical resource status.
-- Track simulated paramedic shifts.
-- Coordinate medical follow-up for flagged individuals.
-- Track cases through medical handover and admission workflows.
-
-### 6. Volunteer Task Management
-
-The platform demonstrates how field volunteers can be coordinated through a centralized interface.
-
-- Create and manage volunteer assignments.
-- Assign follow-up tasks for flagged individuals.
-- Associate incidents with designated medical facilities.
-- Track task progress and response updates.
-- Improve coordination between the command center and field teams.
-
-### 7. Role-Based Dashboard Access
-
-The login interface demonstrates three user roles with different operational responsibilities.
-
-| Role | Responsibilities |
+| City | Monitored areas |
 |---|---|
-| Command Admin | Overall monitoring, sector management, and manual alert controls |
-| Medical Officer (CMO) | Medical triage, ward capacity, and patient records |
-| Volunteer Lead | Field assignments, intercept tasks, and ground-level updates |
+| Prayagraj | Triveni Ghat, Daraganj, Parade Ground |
+| Haridwar | Har Ki Pauri, Subhash Ghat, Bairagi Camp |
+| Ujjain | Ram Ghat, Mahakal Corridor, Narsinghat |
+| Nashik | Ramkund Main Ghat, Panchavati, Sadhugram |
 
-The following mock identities are provided for demonstration:
+Users can switch between cities to explore the interface and its simulated operational data.
 
-| Role | Demo Email |
-|---|---|
-| Command Admin | `admin.commander@kumbhrakshak.gov.in` |
-| Medical Officer | `cmo.officer@kumbhrakshak.gov.in` |
-| Volunteer Lead | `volunteer.lead@kumbhrakshak.gov.in` |
+### 2. Thermal screening and medical alerts
 
-These are illustrative identities, not verified government accounts. Refer to the application's login implementation for the required credentials.
+The prototype simulates thermal camera feeds to show how abnormal temperature readings could be flagged for medical review. It flags simulated readings above **102°F**, creates follow-up tasks for flagged individuals, links alerts to designated medical facilities, and walks through the workflow from detection to medical handover.
 
-**Security note:** The prototype's role selection should not be treated as production-grade access control. A real deployment would require secure authentication and server-side authorization.
+> This feature uses simulated data. It is not a validated AI thermal screening system, and a temperature reading alone cannot confirm an infection.
 
-## Technology Stack
+### 3. GIS-based crowd density monitoring
+
+The dashboard uses Leaflet.js and OpenStreetMap to show crowd conditions across designated sectors, using a simple colour code:
+
+- **Green (Normal):** crowd levels are within the configured operating range.
+- **Yellow (Moderate):** crowd levels need closer monitoring.
+- **Red (Critical):** crowd levels have reached a configured alert threshold.
+
+Map tooltips show each sector's estimated headcount, thermal risk indicators and assigned medical facilities.
+
+### 4. Early warning and crowd alerts
+
+A threshold-based alert system shows how overcrowded sectors could be identified. It monitors simulated occupancy and triggers an alert when occupancy exceeds **96% of a sector's configured capacity**. The alert also plays a warning sound generated with the browser's Web Audio API.
+
+> The thresholds are for demonstration only and are not universal safety standards. Real crowd-dispersal decisions require verified field information and approved emergency procedures.
+
+### 5. Medical resource monitoring
+
+The medical dashboard gives an overview of simulated resources and response activity. It shows ICU bed and isolation ward availability, resource status and paramedic shifts, and tracks flagged individuals through medical follow-up, handover and admission.
+
+### 6. Volunteer task management
+
+The platform shows how field volunteers could be coordinated from one interface. Users can create and manage assignments, assign follow-up tasks for flagged individuals, link incidents to medical facilities, and track task progress, which helps connect the command centre with field teams.
+
+### 7. Role-based dashboard access
+
+The login screen demonstrates three roles with different responsibilities.
+
+| Role | Responsibilities | Demo email |
+|---|---|---|
+| Command Admin | Overall monitoring, sector management and manual alert controls | `admin.commander@kumbhrakshak.gov.in` |
+| Medical Officer (CMO) | Medical triage, ward capacity and patient records | `cmo.officer@kumbhrakshak.gov.in` |
+| Volunteer Lead | Field assignments, intercept tasks and ground-level updates | `volunteer.lead@kumbhrakshak.gov.in` |
+
+These are illustrative identities, not real government accounts. See the login implementation in the code for the credentials it expects.
+
+> **Security note:** The prototype's role selection is not production-grade access control. A real deployment would need secure authentication and server-side authorisation.
+
+---
+
+## Technology stack
 
 | Technology | Purpose |
 |---|---|
 | HTML5 | Application structure |
 | Vanilla JavaScript | Dashboard logic and simulation |
 | Tailwind CSS | Styling and UI components |
-| Leaflet.js | Interactive maps and GIS visualization |
-| OpenStreetMap | Geographic map layer |
+| Leaflet.js | Interactive maps and GIS visualisation |
+| OpenStreetMap | Map layer |
 | Lucide Icons | Interface icons |
 | Web Audio API | Browser-generated warning audio |
 | LocalStorage | Local persistence of supported application state |
 | Google Fonts | Inter and Outfit typography |
 
-## How It Works
+---
 
-Kumbh Rakshak uses a lightweight, browser-based architecture.
+## How it works
 
-1. **Dashboard:** Displays crowd sectors, alerts, medical resources, and operational information.
-2. **Simulation engine:** Updates demonstration data at regular one-second intervals.
-3. **Risk monitoring:** Evaluates simulated temperature readings and sector occupancy against configured thresholds.
-4. **GIS visualization:** Displays sector locations and their crowd status on an interactive map.
-5. **Response coordination:** Demonstrates volunteer assignments and medical follow-up workflows.
-6. **Local storage:** Retains supported application state in the browser.
+Kumbh Rakshak is a lightweight, browser-based application.
 
-The current application is a frontend prototype. Live sensor integration, validated AI inference, and centralized synchronization between multiple users are not established by the current architecture.
+1. **Dashboard:** shows crowd sectors, alerts, medical resources and operational information.
+2. **Simulation engine:** refreshes the demonstration data every second.
+3. **Risk monitoring:** checks simulated temperature readings and sector occupancy against the configured thresholds.
+4. **GIS visualisation:** plots sectors and their crowd status on an interactive map.
+5. **Response coordination:** demonstrates volunteer assignments and medical follow-up.
+6. **Local storage:** keeps supported application state in the browser.
 
-## Getting Started
+This is a frontend prototype. The current architecture does not provide live sensor integration, validated AI inference or synchronisation between multiple users.
+
+---
+
+## Getting started
 
 ### Prerequisites
 
-- A modern web browser.
-- Git, if you want to clone the repository.
-- An internet connection for externally hosted libraries, fonts, and map tiles.
+- A modern web browser
+- Git, if you want to clone the repository
+- An internet connection, for the externally hosted libraries, fonts and map tiles
 
-Node.js and npm are not required for the standalone version.
+Node.js and npm are not needed.
 
 ### Installation
 
-**1. Clone the repository**
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/atharv-mu/Kumbh-Rakshak.git
+   cd Kumbh-Rakshak
+   ```
+2. Run the application. If `index.html` is the entry point, open it directly in your browser. Or start a local server:
+   ```bash
+   python -m http.server 8000
+   ```
+   Then open http://localhost:8000.
+3. Explore the dashboard:
+   - Select a pilgrimage city
+   - Sign in with a demo role
+   - Explore the crowd density map and sector tooltips
+   - Review the simulated thermal alerts
+   - Check medical resources and volunteer tasks
+   - Test the crowd occupancy alerts
 
-```bash
-git clone https://github.com/atharv-mu/Kumbh-Rakshak.git
-cd Kumbh-Rakshak
-```
+---
 
-**2. Run the application**
+## Current limitations
 
-If the project uses `index.html` as its entry point, open it directly in your browser.
+- The MVP is designed mainly for desktop browsers, so some features may not work well on mobile devices.
+- Areas that need work include responsive layouts for small screens, mobile-friendly navigation and dashboard panels, touch interaction on the map, and easier medical and volunteer management screens.
+- All operational data is simulated, so the app must not be used as a live public-safety monitoring system.
 
-Alternatively, start a local server:
+---
 
-```bash
-python -m http.server 8000
-```
+## Future scope
 
-Then open http://localhost:8000 in your browser.
+- [ ] Improve mobile responsiveness and touch interactions
+- [ ] Integrate thermal sensors and validated computer vision models
+- [ ] Explore real-time crowd estimation from approved camera or sensor feeds
+- [ ] Add backend APIs and synchronised multi-user updates
+- [ ] Integrate verified hospital capacity and ambulance dispatch systems
+- [ ] Add GPS-enabled volunteer tracking
+- [ ] Add historical incident analysis and crowd-flow forecasting
+- [ ] Implement secure authentication and permission management
+- [ ] Support multiple languages for field teams and pilgrims
+- [ ] Improve offline capability and communication reliability
+- [ ] Test usability and safety with emergency response professionals
 
-**3. Explore the dashboard**
+---
 
-- Select a pilgrimage location.
-- Sign in using a supported demo role.
-- Explore the crowd density map and sector tooltips.
-- Review simulated thermal alerts.
-- Check medical resources and volunteer tasks.
-- Test the configured crowd occupancy alerts.
+## Privacy, security and safety
 
-## Current Limitations
+Kumbh Rakshak is a hackathon prototype that demonstrates one possible approach to crowd monitoring and emergency coordination.
 
-The current MVP is primarily designed for desktop browsers. Some features and interactions may not work as expected on mobile devices.
+Before any real-world use, it would need secure authentication, proper data protection, validated screening methods, reliable sensor integrations, and testing with qualified medical and crowd-safety professionals.
 
-Areas for improvement include:
+Treat all readings, patient information, occupancy values and resource counts as demonstration data unless independently verified. The platform is not a substitute for professional medical assessment, trained crowd management or official emergency response systems.
 
-- Responsive layouts for smaller screens.
-- Mobile-friendly navigation and dashboard panels.
-- Touchscreen interactions for the GIS map.
-- Better usability for medical and volunteer management interfaces.
-
-The application also relies on simulated operational data and should not be used as a live public-safety monitoring system.
-
-## Future Scope
-
-Planned improvements and potential extensions include:
-
-- [ ] Improve mobile responsiveness and touch interactions.
-- [ ] Integrate thermal sensors and validated computer vision models.
-- [ ] Explore real-time crowd estimation using approved camera or sensor feeds.
-- [ ] Add backend APIs and synchronized multi-user updates.
-- [ ] Integrate verified hospital capacity and ambulance dispatch systems.
-- [ ] Introduce GPS-enabled volunteer tracking.
-- [ ] Add historical incident analysis and crowd-flow forecasting.
-- [ ] Implement secure authentication and permission management.
-- [ ] Support multiple languages for field teams and pilgrims.
-- [ ] Improve offline capabilities and communication reliability.
-- [ ] Conduct usability and safety testing with emergency response professionals.
-
-## Privacy, Security, and Safety
-
-Kumbh Rakshak is a hackathon prototype intended to demonstrate a potential approach to crowd monitoring and emergency coordination.
-
-Before real-world deployment, it would require secure authentication, appropriate data protection, validated screening methods, reliable sensor integrations, and testing with qualified medical and crowd-safety professionals.
-
-Simulated readings, patient information, occupancy values, and resource counts should be treated as demonstration data unless independently verified.
-
-The platform is not a substitute for professional medical assessment, trained crowd management, or official emergency response systems.
+---
 
 ## Contributing
 
@@ -234,25 +216,27 @@ Contributions and suggestions are welcome.
 1. Fork the repository.
 2. Create a feature branch.
 3. Make and test your changes.
-4. Commit your changes with a descriptive message.
+4. Commit with a descriptive message.
 5. Open a pull request describing your improvements.
-
-## License
-
-This project is intended to be released under the MIT License. Ensure that the repository includes a `LICENSE` file containing the full MIT License text before publishing it as an MIT-licensed project.
-
-## Acknowledgments
-
-Kumbh Rakshak uses open-source technologies, including:
-
-- [Leaflet.js](https://leafletjs.com/) for interactive maps.
-- [OpenStreetMap](https://www.openstreetmap.org/) for geographic mapping.
-- [Tailwind CSS](https://tailwindcss.com/) for styling.
-- [Lucide](https://lucide.dev/) for icons.
-- [Google Fonts](https://fonts.google.com/) for typography.
 
 ---
 
-**Kumbh Rakshak — Better situational awareness. Faster coordination. Safer pilgrimages.**
+## License
+
+This project is intended to be released under the MIT License. Before publishing it as MIT-licensed, make sure the repository includes a `LICENSE` file with the full MIT License text.
+
+---
+
+## Acknowledgments
+
+Built with these open-source tools:
+
+- [Leaflet.js](https://leafletjs.com/) for interactive maps
+- [OpenStreetMap](https://www.openstreetmap.org/) for map data
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [Lucide](https://lucide.dev/) for icons
+- [Google Fonts](https://fonts.google.com/) for typography
+
+---
 
 *Developed as a hackathon MVP exploring technology-assisted crowd safety and medical emergency coordination.*
